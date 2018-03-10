@@ -1,6 +1,6 @@
 import React from 'react';
 import actions from 'actions/*.js';
-import store from 'foundations/store';
+import foundations from 'foundations/*.js';
 // import main from 'screens/main';
 
 class Screens extends React.Component {
@@ -18,7 +18,7 @@ class Screens extends React.Component {
 	}
 }
 
-export default store.subscribe(Screens, {
+export default foundations.store.subscribe(Screens, {
 	screens: 'screens.selected',
 });
 
