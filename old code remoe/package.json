@@ -1,0 +1,32 @@
+{
+  "devDependencies": {
+    "jest": "^22.3.0",
+    "webpack": "^3.11.0"
+  },
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "dependencies": {
+    "firebase": "^4.11.0",
+    "toystore": "^1.3.3"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/mode_modules/",
+      "/__tests__/common.js",
+      "/__tests__/config.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "/mode_modules/"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src",
+      "__tests__/"
+    ],
+    "verbose": true,
+    "setupFiles": [
+      "./__tests__/config.js"
+    ]
+  }
+}

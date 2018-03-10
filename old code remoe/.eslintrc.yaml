@@ -1,0 +1,15 @@
+---
+extends: "eslint:recommended"
+globals:
+  test: true
+  expect: true
+  it: true
+parserOptions:
+  ecmaVersion: 6
+  sourceType: "module"
+env:
+  amd: true
+  browser: true
+  es6: true
+  commonjs: true
+
