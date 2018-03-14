@@ -1,0 +1,23 @@
+.trk-topbar-menu-panel-wrapper.open {
+	left: 0;
+}
+.trk-topbar-menu-panel-wrapper {
+	width: 0;
+	width: 400px;
+	max-width: 85%;
+	min-width: 200px;
+	height: 100%;
+	position: fixed;
+	left: -450px;
+	top: 40px;
+	padding: 5px;
+	background: rgba(0, 0, 0, .75);
+
+	transition: left .2s ease-out;
+}
+
+.trk-topbar-menu-panel-top {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}

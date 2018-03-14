@@ -4,4 +4,6 @@
 	top: 0;
 	bottom: 0;
 	position: absolute;
+	background-color: darkslategray;
+	color: white;
 }

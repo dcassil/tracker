@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'assets/css/main.css';
+import 'app.css';
 import routes from 'routes/routes'; // eslint-disable-line
 import Screens from 'screens/screens';
 import TopBar from 'components/topBar/base';

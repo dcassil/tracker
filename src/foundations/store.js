@@ -6,6 +6,11 @@ const keys = {
 		selected: 'main',
 	},
 	user: null,
+	ui: {
+		menu: {
+			isOpen: false,
+		}
+	}
 };
 
 let store = toystore.create(keys);
