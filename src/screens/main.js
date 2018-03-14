@@ -1,5 +1,6 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
+import actions from 'actions/*.js';
 
 class Main extends React.Component {
 
@@ -8,6 +9,11 @@ class Main extends React.Component {
 			.then(() => {
 				foundations.store.set('user', null);
 			});
+	}
+	testAdd() {
+		let data = { test: 'test', yay: 1 };
+
+		actions.data.remote.add('test', data);
 	}
 	renderSignedIn() {
 		return (
@@ -28,6 +34,7 @@ class Main extends React.Component {
 					{display}
 					<div className="column is-half is-offset-one-quarter">
 					</div>
+					<a onClick={this.testAdd}>Test Add </a>
 					<a onClick={this.signout}>Sign out</a>
 				</div>
 			</div>

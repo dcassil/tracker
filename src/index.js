@@ -1,21 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bulma/css/bulma.css';
+import 'assets/css/main.css';
 import routes from 'routes/routes'; // eslint-disable-line
 import Screens from 'screens/screens';
-
-const title = 'Arbiter App';
-
-// routes;
+import TopBar from 'components/topBar/base';
+import BottomNav from 'components/bottomNav/base';
 
 class App extends React.Component {
 	render() {
 		return (
-			<div>
-				<div className="column is-half is-offset-one-quarter">
-					<div className="title">{title}</div>
-				</div>
+			<div className="trk-app-wrapper">
+				<TopBar />
 				<Screens />
+				<BottomNav />
 			</div>
 		);
 	}

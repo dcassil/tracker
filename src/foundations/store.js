@@ -1,12 +1,16 @@
 const toystore = require('toystore');
 const toystoreReact = require('toystore-react');
 
-let store = toystore.create({
+const keys = {
 	screens: {
 		selected: 'main',
 	},
 	user: null,
-});
+};
+
+let store = toystore.create(keys);
+
+store.keys = keys;
 
 // Use partial application to add the 'subscribe' method from toystore-react, bound to this store
 store.subscribe = (Component, mapping) => toystoreReact.subscribe(store, Component, mapping);

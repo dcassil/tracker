@@ -1,10 +1,7 @@
-const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 const config = {
 	entry: [
-		'webpack-dev-server/client?http://localhost:8080',
-		'webpack/hot/only-dev-server',
 		'./src/index.js'
 	],
 	module: {
@@ -19,19 +16,17 @@ const config = {
 		{
 			test: /\.css$/,
 			use: ExtractTextPlugin.extract({
-				fallback: 'style-loader',
-				use: 'css-loader'
-
+				use: ['css-loader']
 			})
 		},
 		{
 			test: /\.js$/,
 			exclude: /node_modules/,
 			use: ['babel-loader', 'eslint-loader']
-		}],
+		}]
 	},
 	resolve: {
-		extensions: ['*', '.js', '.jsx', '.css'],
+		extensions: ['*', '.js', '.jsx'],
 		modules: [
 			path.resolve('./src'),
 			path.resolve('./node_modules')
@@ -43,10 +38,9 @@ const config = {
 		filename: 'bundle.js'
 	},
 	plugins: [
-		new webpack.DefinePlugin({
-			'process.env': {
-				'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-			}
+		new ExtractTextPlugin({ // define where to save the file
+			filename: path.join(__dirname, '/dist/bundle.css'),
+			allChunks: true
 		})
 	],
 	devServer: {
@@ -54,35 +48,5 @@ const config = {
 		historyApiFallback: true
 	}
 };
-
-if (process.env.NODE_ENV === 'production') {
-	config.devtool = 'cheap-module-source-map';
-	config.plugins.push(
-		new webpack.optimize.UglifyJsPlugin({
-			sourceMap: true
-		}),
-		new ExtractTextPlugin({
-			filename: 'bundle.css',
-			disable: false,
-			allChunks: true
-		}),
-		new webpack.optimize.AggressiveMergingPlugin({
-			minSizeReduce: 1,
-			moveToParents: true
-
-		})
-	);
-
-} else {
-	config.devtool = 'cheap-module-eval-source-map';
-	config.plugins.push(
-		new webpack.optimize.UglifyJsPlugin({
-			sourceMap: true
-		}),
-		new ExtractTextPlugin({
-			disable: true
-		})
-	);
-}
 
 module.exports = config;

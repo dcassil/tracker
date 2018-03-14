@@ -16,7 +16,8 @@ const uiConfig = {
 foundations.myFirebase.auth().onAuthStateChanged(function(user) {
 	if (user) {
 		// User is signed in.
-		foundations.store.set('user', { displayName: user.displayName });
+		foundations.store.set('user', user);
+		window.Tracker.user = user;
 		// ...
 	} else {
 		// User is signed out.
