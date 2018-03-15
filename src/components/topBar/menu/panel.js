@@ -10,7 +10,7 @@ class TopBarMenuPanel extends React.Component {
 				<div>
 					Welcome {this.props.user.displayName}
 				</div>
-				<a onClick={actions.signin.signout}>Sign out</a>
+				<a onClick={actions.user.signout}>Sign out</a>
 			</div>
 		);	
 	}

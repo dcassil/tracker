@@ -6,12 +6,12 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 class Signin extends React.Component {
 
 	render() {
-		console.log(actions); //eslint-disable-line
-		let blaw = actions.signin; //eslint-disable-line
+		actions.debug.log(actions); //eslint-disable-line
+		let blaw = actions.user; //eslint-disable-line
 		
 		return (
 			<div>
-				<StyledFirebaseAuth uiConfig={actions.signin.uiConfig} firebaseAuth={foundations.myFirebase.auth()}/>
+				<StyledFirebaseAuth uiConfig={actions.user.uiConfig} firebaseAuth={foundations.myFirebase.auth()}/>
 			</div>
 		);
 	}

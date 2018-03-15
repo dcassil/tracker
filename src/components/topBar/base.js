@@ -3,16 +3,24 @@ import foundations from 'foundations/*.js';
 import actions from 'actions/*.js';
 import 'components/topBar/base.css';
 import TopMenu from 'components/topBar/menu/base';
+import AddCollectionPanel from 'components/addCollectionPanel/base';
 import Icon from 'components/icon/icon.js';
 
 class TopBarBase extends React.Component {
-
 	render() {
+		let collectionPanelIsOpen = this.props.collectionPanelIsOpen;
+		let content = null;
+
+		if (collectionPanelIsOpen) {
+			content = <AddCollectionPanel />;
+		} else {
+			content = <Icon onClick={actions.ui.collectionPanel.open} filename="plus"/>;
+		}
 		return (
 			<div className="trk-topbar-wrapper">
 				<TopMenu />
 				<div>
-					<Icon onClick={actions.tracker.addNew} filename="plus"/>
+					{content}
 				</div>
 			</div>
 		);
@@ -20,6 +28,6 @@ class TopBarBase extends React.Component {
 }
 
 export default foundations.store.subscribe(TopBarBase, {
-
+	collectionPanelIsOpen: 'ui.addCollectionPanel.isOpen',
 });
 

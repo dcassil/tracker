@@ -1,42 +1,41 @@
 import foundations from 'foundations/*.js';
+import actions from 'actions/*.js';
 
 require('firebase/firestore');
 
 const db = foundations.myFirebase.firestore();
 
 const remote = {
-	add: function add(key, value) {
-		let dataToSave = { userId: window.Tracker.user.uid, data: value };
+	add: function add(key, dataToSave) {
+		dataToSave.userId = actions.user.getUser();
 
 		return db.collection(key).add(dataToSave)
-			.then(docRef => {// eslint-disable-line
-				console.log(docRef); // eslint-disable-line
+			.then(docRef => {
+				actions.debug.log(docRef);
 			})
-			.catch(error => {// eslint-disable-line
-				console.log(error); // eslint-disable-line
+			.catch(error => {
+				actions.debug.log(error);
 			});
 	},
-	get: function get(key) {
-		let collectionRef = db.collection(key);
-		let query = collectionRef.where('userId', '==', window.Tracker.user.uid);
+	get: function get(key, where) {
+		where.unshift({
+			a: 'userId',
+			b: '==',
+			c: window.Tracker.user.uid,
+		});
 
-		return query
-			.get()
-			.then(snapshot => {
-				let data = [];
-
-				snapshot.forEach(doc => {
-					data.push({ id: doc.id, data: doc.data().data });
-				});
-
-				return data;
-			})
-			.catch(error => {// eslint-disable-line
-				console.log("Error getting documents: ", error); // eslint-disable-line
-			});
+		return exports.remote.getPublic(key, where);
 	},
-	getPublic: function get(key) {
-		return db.collection(key).get()
+	getPublic: function get(key, where) {
+		let query = db.collection(key);
+
+		if (where) {
+			where.forEach(w => {
+				query = query.where(w.a, w.b, w.c);
+			});
+		}
+		
+		return query.get()
 			.then(snapshot => {
 				let data = [];
 

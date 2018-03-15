@@ -1,7 +1,8 @@
 import main from 'screens/main';
 import signin from 'screens/signin';
+import foundations from 'foundations/*.js';
 
-const store = require('foundations/store');
+const store = foundations.store;
 const screens = {
 	main,
 	signin,

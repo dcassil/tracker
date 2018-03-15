@@ -9,8 +9,17 @@ const keys = {
 	ui: {
 		menu: {
 			isOpen: false,
+		},
+		addCollectionPanel: {
+			isOpen: false,
 		}
-	}
+	},
+	animate: {
+		after: {
+			'200': false, 
+		}
+	},
+	debug: false,
 };
 
 let store = toystore.create(keys);

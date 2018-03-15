@@ -32,9 +32,14 @@ function signout() {
 		});
 }
 
+function getUser() {
+	return foundations.store.get('user');
+}
+
 module.exports = {
 	uiConfig,
 	signout,
+	getUser,
 };
 
 
