@@ -11,7 +11,6 @@ class Signin extends React.Component {
 		
 		return (
 			<div>
-				<p>Please sign-in:</p>
 				<StyledFirebaseAuth uiConfig={actions.signin.uiConfig} firebaseAuth={foundations.myFirebase.auth()}/>
 			</div>
 		);

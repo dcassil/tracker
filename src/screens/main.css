@@ -1,0 +1,13 @@
+.trk-main-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.trk-main-body {
+	display: flex;
+	justify-content: space-around;
+	flex-direction: row;
+}

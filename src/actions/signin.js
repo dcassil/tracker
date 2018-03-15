@@ -25,8 +25,16 @@ foundations.myFirebase.auth().onAuthStateChanged(function(user) {
 	}
 });
 
+function signout() {
+	foundations.myFirebase.auth().signOut()
+		.then(() => {
+			foundations.store.set('user', null);
+		});
+}
+
 module.exports = {
 	uiConfig,
+	signout,
 };
 
 

@@ -7,3 +7,8 @@
 	background-color: darkslategray;
 	color: white;
 }
+
+a {
+	color: white;
+	cursor: pointer;
+}

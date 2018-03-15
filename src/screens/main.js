@@ -1,42 +1,23 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
-import actions from 'actions/*.js';
+import 'screens/main.css';
 
 class Main extends React.Component {
 
-	signout() {
-		foundations.myFirebase.auth().signOut()
-			.then(() => {
-				foundations.store.set('user', null);
-			});
-	}
-	testAdd() {
-		let data = { test: 'test', yay: 1 };
-
-		actions.data.remote.add('test', data);
-	}
-	renderSignedIn() {
-		return (
-			<div>Welcome {this.props.user.displayName}</div>
-		);
-	}
 	renderNotSignedIn() {
 		return (
-			<a href="/#signin">Please sign in</a>
+			<div><span>Please </span><a href="/#signin">sign in</a></div>
 		);
 	}
 	render() {
-		let display = this.props.user ? this.renderSignedIn() : this.renderNotSignedIn();
+		let display = !this.props.user ? this.renderNotSignedIn() : '';
 
 		return (
-			<div>
-				<div className="columns">
+			<div className="trk-main-wrapper">
+				<div className="trk-main-body">
 					{display}
-					<div className="column is-half is-offset-one-quarter">
-					</div>
-					<a onClick={this.testAdd}>Test Add </a>
-					<a onClick={this.signout}>Sign out</a>
 				</div>
+				
 			</div>
 		);
 	}
