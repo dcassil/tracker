@@ -2,14 +2,15 @@ import React from 'react';
 import foundations from 'foundations/*.js';
 import 'components/topBar/menu/base.css';
 import MenuPanel from 'components/topBar/menu/panel';
-import MenuIcon from 'components/topBar/menu/icon';
+import Icon from 'components/icon/icon';
+import actions from 'actions/*.js';
 
 class TopBarMenu extends React.Component {
 
 	renderClosed() {
 		return (
 			<div className="trk-topbar-menu">
-				<MenuIcon />
+				<Icon filename="menu" onClick={actions.ui.menu.toggleOpen}/>
 				<MenuPanel className="trk-topbar-menu-panel-wrapper" />
 			</div>
 		);
@@ -17,7 +18,7 @@ class TopBarMenu extends React.Component {
 	renderOpen() {
 		return (
 			<div className="trk-topbar-menu">
-				<MenuIcon />
+				<Icon filename="menu" onClick={actions.ui.menu.toggleOpen}/>
 				<MenuPanel className="trk-topbar-menu-panel-wrapper open" />
 			</div>
 		);

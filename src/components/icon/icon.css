@@ -1,6 +1,7 @@
-.trk-topbar-menu-icon {
+.trk-topbar-icon {
 	padding: 3px;
     max-width: 100%;
     max-height: 100%;
     box-sizing: border-box;
+    cursor: pointer;
 }
