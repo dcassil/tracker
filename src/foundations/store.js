@@ -20,6 +20,16 @@ const keys = {
 		}
 	},
 	debug: false,
+	trackers: {
+		containers: {
+			current: {},
+			all: [],
+		},
+		records: {
+			current: {},
+			all: [],
+		},
+	}
 };
 
 let store = toystore.create(keys);

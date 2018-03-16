@@ -1,7 +1,8 @@
 import actions from 'actions/*.js';
+import foundations from 'foundations/*.js';
 
 function addNew(data) {
-	actions.data.remote.add('TrackerContainer', data);
+	actions.data.remote.add('TrackerContainers', data);
 }
 
 function addNewInstance(TrackerContainerId, data) {
@@ -10,11 +11,19 @@ function addNewInstance(TrackerContainerId, data) {
 		data,
 	};
 
-	actions.data.remote.add('TrackerContainer', saveData);
+	actions.data.remote.add('TrackerContainers', saveData);
 }
 
 function getTrackerContainers() {
-	return actions.data.remote.get('TrackerContainer');
+	return actions.data.remote.get('TrackerContainers');
+}
+
+function getCurrentContainer() {
+	return foundations.store.get('trackers.containers.current');
+}
+
+function setCurrentContainer(data) {
+	foundations.store.set('trackers.containers.current', data);
 }
 
 function getTrackersForContianer(containerId) {
@@ -32,6 +41,8 @@ module.exports = {
 	addNewInstance,
 	getTrackerContainers,
 	getTrackersForContianer,
+	getCurrentContainer,
+	setCurrentContainer,
 };
 
 

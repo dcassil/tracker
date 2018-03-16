@@ -7,7 +7,7 @@ const db = foundations.myFirebase.firestore();
 
 const remote = {
 	add: function add(key, dataToSave) {
-		dataToSave.userId = actions.user.getUser();
+		dataToSave.userId = actions.user.getUser().uid;
 
 		return db.collection(key).add(dataToSave)
 			.then(docRef => {
