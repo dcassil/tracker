@@ -10,7 +10,7 @@ class Screens extends React.Component {
 		let Screen = actions.screens.getScreenByName(name); 
 
 		return (
-			<div>
+			<div className="trk-screen-wrapper">
 				<Screen />
 			</div>
 			

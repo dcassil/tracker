@@ -1,7 +1,7 @@
 import foundations from 'foundations/*.js';
 
 const menu = {
-	key: 'ui.menu.isOpen',
+	key: 'ui.menu',
 	isOpen: function() {
 		let thisKey = `${module.exports.menu.key}.isOpen`;
 
@@ -21,6 +21,11 @@ const collectionPanel = {
 		let thisKey = module.exports.collectionPanel.key + '.isOpen';
 
 		foundations.store.set(thisKey, true);
+	},
+	close: function() {
+		let thisKey = module.exports.collectionPanel.key + '.isOpen';
+
+		foundations.store.set(thisKey, false);
 	}
 };
 

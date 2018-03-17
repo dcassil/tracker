@@ -1,7 +1,7 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
 import actions from 'actions/*.js';
-import 'components/addCollectionPanel/base.css';
+import 'components/tracker/add/base.css';
 
 class AddCollectionPanelBase extends React.Component {
 	constructor() {
@@ -19,12 +19,13 @@ class AddCollectionPanelBase extends React.Component {
 	}
 	componentWillUnmount() {
 		this.open.isOpen = false;
-		actions.animate.after.ms200();
+		actions.animate.after.ms200(this.open);
 	}
 	handleSubmit(e) {
 		e.preventDefault();
 		
-		actions.tracker.addNew(this.props.currentContainer);
+		actions.tracker.add(this.props.currentContainer);
+		actions.ui.collectionPanel.close();
 	}
 	nameChange(e) {
 		this.props.currentContainer.name = e.target.value;
@@ -43,7 +44,7 @@ class AddCollectionPanelBase extends React.Component {
 					<form onSubmit={this.handleSubmit} >
 						<label htmlFor="trk-addCollectionPanelName">Name</label>
 						<input type="text" id="trk-addCollectionPanelName" onChange={this.nameChange} />
-						<input type="submit" value="Save" />
+						<input type="submit" value="Save"/>
 					</form>
 				</div>
 			</div>
@@ -53,6 +54,6 @@ class AddCollectionPanelBase extends React.Component {
 
 export default foundations.store.subscribe(AddCollectionPanelBase, {
 	after200ms: 'animate.after.200',
-	currentContainer: 'trackers.containers.current',
+	currentContainer: 'trackers.current',
 });
 

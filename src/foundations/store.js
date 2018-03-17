@@ -21,14 +21,8 @@ const keys = {
 	},
 	debug: false,
 	trackers: {
-		containers: {
-			current: {},
-			all: [],
-		},
-		records: {
-			current: {},
-			all: [],
-		},
+		current: {},
+		all: [],
 	}
 };
 

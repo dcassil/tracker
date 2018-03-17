@@ -6,8 +6,21 @@
 	margin-right: auto;
 }
 
+.trk-screen-wrapper {
+	overflow: scroll;
+    height: 100%;
+}
+
 .trk-main-body {
 	display: flex;
 	justify-content: space-around;
 	flex-direction: row;
+}
+
+.trk-trackers-wrapper {
+	width: 100%;
+	padding: 5px;
+	box-sizing: border-box;
+	height: 100%;
+	overflow: scroll;
 }

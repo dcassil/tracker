@@ -3,7 +3,7 @@ import foundations from 'foundations/*.js';
 import actions from 'actions/*.js';
 import 'components/topBar/base.css';
 import TopMenu from 'components/topBar/menu/base';
-import AddCollectionPanel from 'components/addCollectionPanel/base';
+import AddCollectionPanel from 'components/tracker/add/base';
 import Icon from 'components/icon/icon.js';
 
 class TopBarBase extends React.Component {

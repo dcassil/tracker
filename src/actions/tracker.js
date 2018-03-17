@@ -1,48 +1,57 @@
 import actions from 'actions/*.js';
 import foundations from 'foundations/*.js';
 
-function addNew(data) {
-	actions.data.remote.add('TrackerContainers', data);
+window.setTimeout(() => {
+	actions.data.listenToDBCollectionChange('Trackers', 'trackers.all');
+}, 500);
+
+function add(data) {
+	actions.data.remote.add('Trackers', data);
 }
 
-function addNewInstance(TrackerContainerId, data) {
+function addRecord(TrackerId, data) {
 	let saveData = {
-		'TrackerContainerId': TrackerContainerId,
+		'TrackerId': TrackerId,
 		data,
 	};
 
-	actions.data.remote.add('TrackerContainers', saveData);
+	actions.data.remote.add('TrackerRecords', saveData);
 }
 
-function getTrackerContainers() {
-	return actions.data.remote.get('TrackerContainers');
+function get() {
+	return actions.data.remote.get('Trackers');
 }
 
-function getCurrentContainer() {
-	return foundations.store.get('trackers.containers.current');
+function getCurrent() {
+	return foundations.store.get('trackers.current');
 }
 
-function setCurrentContainer(data) {
-	foundations.store.set('trackers.containers.current', data);
+function setCurrent(data) {
+	foundations.store.set('trackers.current', data);
 }
 
-function getTrackersForContianer(containerId) {
+function set(data) {
+	foundations.store.set('trackers.all', data);
+}
+
+function getRecords(containerId) {
 	let where = [{
-		a: 'TrackerContainerId',
+		a: 'TrackerId',
 		b: '==',
 		c: containerId,
 	}];
 
-	return actions.data.remote.get('TrackerInstance', where);
+	return actions.data.remote.get('TrackerRecords', where);
 }
 
 module.exports = {
-	addNew,
-	addNewInstance,
-	getTrackerContainers,
-	getTrackersForContianer,
-	getCurrentContainer,
-	setCurrentContainer,
+	add,
+	set,
+	addRecord,
+	get,
+	getRecords,
+	getCurrent,
+	setCurrent,
 };
 
 

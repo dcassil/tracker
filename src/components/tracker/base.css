@@ -1,0 +1,8 @@
+.trk-tracker {
+	width: 100%;
+	height: 100px;
+	background-color: white;
+	color: black;
+	margin: 2px;
+	box-sizing: border-box;
+}
