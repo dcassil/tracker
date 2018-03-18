@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import 'app.css';
 import routes from 'routes/routes'; // eslint-disable-line
 import Screens from 'screens/screens';
-import TopBar from 'components/topBar/base';
-import BottomNav from 'components/bottomNav/base';
+import TopBar from 'components/topBar/topBar';
+import BottomNav from 'components/bottomNav/bottomNav';
 
 class App extends React.Component {
 	render() {

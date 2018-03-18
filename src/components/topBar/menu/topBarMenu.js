@@ -1,7 +1,7 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
-import 'components/topBar/menu/base.css';
-import MenuPanel from 'components/topBar/menu/panel';
+import 'components/topBar/menu/topBarMenu.css';
+import MenuPanel from 'components/topBar/menu/panel/topBarMenuPanel';
 import Icon from 'components/icon/icon';
 import actions from 'actions/*.js';
 

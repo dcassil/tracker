@@ -1,10 +1,10 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
-import Tracker from 'components/tracker/base';
+import actions from 'actions/*.js';
+import Tracker from 'components/tracker/tracker';
 import 'screens/main.css';
 
 class Main extends React.Component {
-
 	renderNoTrackers() {
 		return <div></div>;
 	}
@@ -15,6 +15,8 @@ class Main extends React.Component {
 	}
 	renderSignedIn() {
 		let trackers = this.props.trackers;
+
+		actions.tracker.initListeners();
 
 		if (trackers) {
 			return this.renderTrackers(trackers);

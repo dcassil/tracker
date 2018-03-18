@@ -1,6 +1,6 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
-import 'components/tracker/base.css';
+import 'components/tracker/tracker.css';
 
 class Tracker extends React.Component {
 	render() {

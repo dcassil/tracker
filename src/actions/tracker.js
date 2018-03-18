@@ -1,9 +1,9 @@
 import actions from 'actions/*.js';
 import foundations from 'foundations/*.js';
 
-window.setTimeout(() => {
+function initListeners() {
 	actions.data.listenToDBCollectionChange('Trackers', 'trackers.all');
-}, 500);
+}
 
 function add(data) {
 	actions.data.remote.add('Trackers', data);
@@ -52,6 +52,7 @@ module.exports = {
 	getRecords,
 	getCurrent,
 	setCurrent,
+	initListeners,
 };
 
 

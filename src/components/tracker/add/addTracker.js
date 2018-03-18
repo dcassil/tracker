@@ -1,7 +1,7 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
 import actions from 'actions/*.js';
-import 'components/tracker/add/base.css';
+import 'components/tracker/add/addTracker.css';
 
 class AddCollectionPanelBase extends React.Component {
 	constructor() {

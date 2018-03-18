@@ -1,9 +1,9 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
 import actions from 'actions/*.js';
-import 'components/topBar/base.css';
-import TopMenu from 'components/topBar/menu/base';
-import AddCollectionPanel from 'components/tracker/add/base';
+import 'components/topBar/topBar.css';
+import TopMenu from 'components/topBar/menu/topBarMenu';
+import AddCollectionPanel from 'components/tracker/add/addTracker';
 import Icon from 'components/icon/icon.js';
 
 class TopBarBase extends React.Component {

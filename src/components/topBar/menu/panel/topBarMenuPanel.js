@@ -1,7 +1,7 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
 import actions from 'actions/*.js';
-import 'components/topBar/menu/panel.css';
+import 'components/topBar/menu/panel/topBarMenuPanel.css';
 
 class TopBarMenuPanel extends React.Component {
 	renderUserName() {
