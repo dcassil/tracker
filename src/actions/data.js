@@ -24,7 +24,10 @@ function listenToDBCollectionChange(dbCollectionKey, storeKey) {
 			let data = [];
 
 			snapshot.docs.forEach(doc => {
-				data.push({ id: doc.id, data: doc.data() });
+				let result = doc.data();
+
+				result.id = doc.id;
+				data.push(result);
 			});
 
 			foundations.store.set(storeKey, data);
@@ -46,9 +49,9 @@ const remote = {
 	get: function get(key, where) {
 		let w = getUserWhere();
 
-		where.unshift(w);
+		where.push(w);
 
-		return exports.remote.getPublic(key, where);
+		return module.exports.remote.getPublic(key, where);
 	},
 	getPublic: function get(key, where) {
 		let query = db.collection(key);
@@ -64,7 +67,10 @@ const remote = {
 				let data = [];
 
 				snapshot.forEach(doc => {
-					data.push({ id: doc.id, data: doc.data().data });
+					let result = doc.data();
+
+					result.id = doc.id;
+					data.push(result);
 				});
 				
 				return data;

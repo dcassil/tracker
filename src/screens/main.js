@@ -1,6 +1,5 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
-import actions from 'actions/*.js';
 import Tracker from 'components/tracker/tracker';
 import 'screens/main.css';
 
@@ -16,8 +15,6 @@ class Main extends React.Component {
 	renderSignedIn() {
 		let trackers = this.props.trackers;
 
-		actions.tracker.initListeners();
-
 		if (trackers) {
 			return this.renderTrackers(trackers);
 		} else {
@@ -27,8 +24,8 @@ class Main extends React.Component {
 	renderTrackers(trackers) {
 		return (
 			<div className="trk-trackers-wrapper">
-				{trackers.map(container => {
-					return <Tracker {...container.data} key={container.id}/>;
+				{trackers.map(tracker => {
+					return <Tracker {...{ tracker: tracker }} key={tracker.id}/>;
 				})}
 			</div>
 		);

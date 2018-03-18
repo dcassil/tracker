@@ -5,6 +5,8 @@ import routes from 'routes/routes'; // eslint-disable-line
 import Screens from 'screens/screens';
 import TopBar from 'components/topBar/topBar';
 import BottomNav from 'components/bottomNav/bottomNav';
+import actions from 'actions/*.js';
+import foundations from 'foundations/*.js';
 
 class App extends React.Component {
 	render() {
@@ -17,6 +19,21 @@ class App extends React.Component {
 		);
 	}
 }
+
+foundations.myFirebase.auth().onAuthStateChanged(function(user) {
+	if (user) {
+		// User is signed in.
+		foundations.store.set('user', user);
+		window.Tracker.user = user;
+
+		// init db listeners
+		actions.tracker.initListeners();
+		// ...
+	} else {
+		// User is signed out.
+		// ...
+	}
+});
 
 ReactDOM.render(<App/>, app);
 module.hot.accept();

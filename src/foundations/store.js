@@ -23,6 +23,10 @@ const keys = {
 	trackers: {
 		current: {},
 		all: [],
+		records: {
+			current: [],
+			all: [],
+		}
 	}
 };
 

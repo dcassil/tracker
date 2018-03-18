@@ -1,0 +1,8 @@
+.trk-tracker-records {
+	width: 100%;
+	height: 20px;
+	background-color: rgb(255, 255, 255, .9);
+	color: rgb(51, 51, 51);
+	padding: 2px;
+	box-sizing: border-box;
+}

@@ -3,6 +3,17 @@
 	height: 100px;
 	background-color: white;
 	color: black;
-	margin: 2px;
 	box-sizing: border-box;
+}
+
+.trk-tracker-wrapper {
+	margin: 1px;
+}
+
+.trk-tracker-topBar {
+	display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    align-items: center;
+    height: 20px;
 }

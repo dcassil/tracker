@@ -1,21 +1,40 @@
 import actions from 'actions/*.js';
 import foundations from 'foundations/*.js';
 
+let record = {
+	loadForCurrent: function() {
+		let currentTracker = module.exports.getCurrent();
+		
+		return module.exports.record.getRecords(currentTracker.id)
+			.then(records => {
+				foundations.store.set('trackers.records.current', records);
+			});
+	},
+	add: function(TrackerId, data) {
+		let saveData = {
+			'TrackerId': TrackerId,
+			data,
+		};
+	
+		actions.data.remote.add('TrackerRecords', saveData);
+	},
+	getRecords: function(containerId) {
+		let where = [{
+			a: 'TrackerId',
+			b: '==',
+			c: containerId,
+		}];
+	
+		return actions.data.remote.get('TrackerRecords', where);
+	}
+};
+
 function initListeners() {
 	actions.data.listenToDBCollectionChange('Trackers', 'trackers.all');
 }
 
 function add(data) {
 	actions.data.remote.add('Trackers', data);
-}
-
-function addRecord(TrackerId, data) {
-	let saveData = {
-		'TrackerId': TrackerId,
-		data,
-	};
-
-	actions.data.remote.add('TrackerRecords', saveData);
 }
 
 function get() {
@@ -34,25 +53,14 @@ function set(data) {
 	foundations.store.set('trackers.all', data);
 }
 
-function getRecords(containerId) {
-	let where = [{
-		a: 'TrackerId',
-		b: '==',
-		c: containerId,
-	}];
-
-	return actions.data.remote.get('TrackerRecords', where);
-}
-
 module.exports = {
 	add,
 	set,
-	addRecord,
 	get,
-	getRecords,
 	getCurrent,
 	setCurrent,
 	initListeners,
+	record,
 };
 
 
