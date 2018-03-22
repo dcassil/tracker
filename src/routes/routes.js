@@ -10,8 +10,8 @@ router.get('/signin', function(route) {
 	console.log(route); // eslint-disable-line
 });
 
-router.get('/sources', function(route) {
-	actions.screens.setSelected('sources');
+router.get('/tracker/:id', function(route) {
+	actions.screens.setSelected('tracker', { trackerId: route.params.id });
 	console.log(route); // eslint-disable-line
 });
 

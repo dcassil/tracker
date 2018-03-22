@@ -1,0 +1,51 @@
+.trk-tracker-record-add-wrapper {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+	background-color: rgba(0, 0, 0, .8);
+	color: white;
+	padding: 50px;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.trk-tracker-record-add-form {
+	display: flex;
+	flex-direction: column;
+	pointer-events: all;
+	height: 300px;
+    justify-content: space-between;
+}
+
+.trk-tracker-record-add-form span {
+	display: flex;
+	flex-direction: column;
+}
+
+.trk-tracker-form-button {
+	color: white;
+    background-color: steelblue;
+    border: none;
+    padding: 10px;
+    margin-top: 25px;
+    box-sizing: border-box;
+}
+
+.trk-tracker-record-add-form-date {
+	background-color: white;
+    padding: 15px;
+    font-size: large;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.trk-tracker-record-add-form-value {
+	padding: 25px;
+	font-size: xx-large;
+	text-align: center;
+}

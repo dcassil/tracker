@@ -4,6 +4,7 @@ const toystoreReact = require('toystore-react');
 const keys = {
 	screens: {
 		selected: 'main',
+		selectedOptions: {},
 	},
 	user: null,
 	ui: {
@@ -12,7 +13,10 @@ const keys = {
 		},
 		addCollectionPanel: {
 			isOpen: false,
-		}
+		},
+		screen: {
+			orientation: window.screen.orientation.type,
+		},
 	},
 	animate: {
 		after: {
@@ -21,12 +25,14 @@ const keys = {
 	},
 	debug: false,
 	trackers: {
-		current: {},
+		current: {
+			instance: null,
+			chart: {
+				scope: 'day',
+			}
+		},
 		all: [],
-		records: {
-			current: [],
-			all: [],
-		}
+		addRecordOpenFor: null,
 	}
 };
 

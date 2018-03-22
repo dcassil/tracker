@@ -6,12 +6,12 @@ import foundations from 'foundations/*.js';
 class Screens extends React.Component {
 	render() {
 		let name = this.props.screens || 'main';
-		
+		let options = actions.screens.getCurrentOptions();
 		let Screen = actions.screens.getScreenByName(name); 
 
 		return (
 			<div className="trk-screen-wrapper">
-				<Screen />
+				<Screen {...options}/>
 			</div>
 			
 		);

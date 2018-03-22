@@ -1,66 +1,71 @@
-import actions from 'actions/*.js';
 import foundations from 'foundations/*.js';
 
-let record = {
-	loadForCurrent: function() {
-		let currentTracker = module.exports.getCurrent();
-		
-		return module.exports.record.getRecords(currentTracker.id)
-			.then(records => {
-				foundations.store.set('trackers.records.current', records);
+let actions;
+
+/**
+ * Called by actions.js to avoid circular dependencies.
+ */
+function init(actionsRef) {
+	actions = actionsRef;
+}
+
+let remote = {
+	save: function(data) {
+		actions.data.remote.doc.set('Trackers', data.name, data);
+	},
+	load: function() {
+		actions.data.remote.collection.get('Trackers')
+			.then(data => {
+				module.exports.set(data);
 			});
 	},
-	add: function(TrackerId, data) {
-		let saveData = {
-			'TrackerId': TrackerId,
-			data,
-		};
-	
-		actions.data.remote.add('TrackerRecords', saveData);
-	},
-	getRecords: function(containerId) {
-		let where = [{
-			a: 'TrackerId',
-			b: '==',
-			c: containerId,
-		}];
-	
-		return actions.data.remote.get('TrackerRecords', where);
+	loadAndInitListeners: function() {
+		module.exports.remote.load();
+		actions.data.remote.collection.listenToDBCollectionChange('Trackers', 'trackers.all');
 	}
 };
-
-function initListeners() {
-	actions.data.listenToDBCollectionChange('Trackers', 'trackers.all');
-}
-
-function add(data) {
-	actions.data.remote.add('Trackers', data);
-}
-
-function get() {
-	return actions.data.remote.get('Trackers');
-}
-
-function getCurrent() {
-	return foundations.store.get('trackers.current');
-}
-
-function setCurrent(data) {
-	foundations.store.set('trackers.current', data);
-}
 
 function set(data) {
 	foundations.store.set('trackers.all', data);
 }
 
+function setCurrent(data) {
+	foundations.store.set('trackers.current.instance', data);
+}
+
+function setCurrentById(id) {
+	let tracker = module.exports.getById(id);
+
+	module.exports.setCurrent(tracker);
+}
+
+function getById(id) {
+	let trackers = foundations.store.get('trackers.all');
+
+	return trackers && trackers.find(tracker => {
+		return tracker.id === id;
+	});
+}
+
+function openAddRecordFor(id) {
+	foundations.store.set('trackers.addRecordOpenFor', id);
+}
+
+function closeAddRecord() {
+	foundations.store.set('trackers.addRecordOpenFor', null);
+}
+
+
+
 module.exports = {
-	add,
+	getById,
+	remote,
 	set,
-	get,
-	getCurrent,
 	setCurrent,
-	initListeners,
-	record,
+	setCurrentById,
+	init,
+	openAddRecordFor,
+	closeAddRecord,
 };
 
 

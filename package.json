@@ -46,10 +46,12 @@
     "webpack-dev-server": "^2.5.1"
   },
   "dependencies": {
+    "chart.js": "^2.7.2",
     "css-loader": "^0.28.10",
     "firebaseui": "^2.6.2",
     "path-to-regexp": "^2.1.0",
     "react": "^15.6.1",
+    "react-chartjs-2": "^2.7.0",
     "react-dom": "^15.6.1",
     "react-firebaseui": "^1.1.9",
     "redux": "^3.7.2",

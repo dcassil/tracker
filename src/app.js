@@ -8,6 +8,8 @@ import BottomNav from 'components/bottomNav/bottomNav';
 import actions from 'actions/*.js';
 import foundations from 'foundations/*.js';
 
+actions.ui.screen.initOrientaionListener();
+
 class App extends React.Component {
 	render() {
 		return (
@@ -27,7 +29,7 @@ foundations.myFirebase.auth().onAuthStateChanged(function(user) {
 		window.Tracker.user = user;
 
 		// init db listeners
-		actions.tracker.initListeners();
+		actions.tracker.remote.loadAndInitListeners();
 		// ...
 	} else {
 		// User is signed out.

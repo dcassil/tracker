@@ -1,10 +1,10 @@
-import screens from 'actions/screens';
-import user from 'actions/user';
-import data from 'actions/data';
-import ui from 'actions/ui';
-import tracker from 'actions/tracker';
-import debug from 'actions/debug';
-import animate from 'actions/animate';
+import * as screens from 'actions/screens';
+import * as user from 'actions/user';
+import * as data from 'actions/data';
+import * as ui from 'actions/ui';
+import * as tracker from 'actions/tracker';
+import * as debug from 'actions/debug';
+import * as animate from 'actions/animate';
 
 const actions = { 
 	data,
@@ -15,6 +15,15 @@ const actions = {
 	tracker,
 	animate,
 };
+
+for (let key in actions) {
+	let action = actions[key];
+
+	// Some base actions files like logic and cookies don't use other actions so they won't have init
+	if (typeof action.init === 'function') {
+		action.init(actions);
+	}
+}
 
 export default actions;
 	

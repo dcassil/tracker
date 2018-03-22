@@ -29,9 +29,21 @@ const collectionPanel = {
 	}
 };
 
+const screen = {
+	setOrientation: function(key) {
+		foundations.store.set('ui.screen.orientation', key);
+	},
+	initOrientaionListener: function() {
+		window.screen.orientation.addEventListener('change', e => {
+			module.exports.screen.setOrientation(e.target.type);
+		});
+	}
+};
+
 module.exports = {
 	menu,
 	collectionPanel,
+	screen,
 };
 
 

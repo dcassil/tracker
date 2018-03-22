@@ -7,6 +7,7 @@ class AddCollectionPanelBase extends React.Component {
 	constructor() {
 		super();
 
+		this.tracker = { records: [] };
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.nameChange = this.nameChange.bind(this);
 	}
@@ -23,12 +24,16 @@ class AddCollectionPanelBase extends React.Component {
 	}
 	handleSubmit(e) {
 		e.preventDefault();
+		let tracker = this.tracker;
 		
-		actions.tracker.add(this.props.currentContainer);
+		actions.tracker.remote.save(tracker);
+		actions.ui.collectionPanel.close();
+	}
+	handleCancelClick() {
 		actions.ui.collectionPanel.close();
 	}
 	nameChange(e) {
-		this.props.currentContainer.name = e.target.value;
+		this.tracker.name = e.target.value;
 	}
 	render() {
 		let className = 'trk-add-collection-panel-wrapper';
@@ -41,10 +46,16 @@ class AddCollectionPanelBase extends React.Component {
 				<div className="trk-add-collection-panel-header">
 				</div>
 				<div className="trk-add-collection-panel-body">
-					<form onSubmit={this.handleSubmit} >
-						<label htmlFor="trk-addCollectionPanelName">Name</label>
-						<input type="text" id="trk-addCollectionPanelName" onChange={this.nameChange} />
-						<input type="submit" value="Save"/>
+					<form className="trk-form" onSubmit={this.handleSubmit} >
+						<span>
+							<label htmlFor="trk-fomr-label">Name</label>
+							<input className="trk-form-text" type="text" id="trk-form-text" onChange={this.nameChange} />
+						</span>
+						<input className="trk-form-button" type="submit" defaultValue="Save" />
+						<input className="trk-form-button" 
+							type="cancel"
+							defaultValue="Cancel"
+							onClick={this.handleCancelClick} />
 					</form>
 				</div>
 			</div>
@@ -54,6 +65,5 @@ class AddCollectionPanelBase extends React.Component {
 
 export default foundations.store.subscribe(AddCollectionPanelBase, {
 	after200ms: 'animate.after.200',
-	currentContainer: 'trackers.current',
 });
 

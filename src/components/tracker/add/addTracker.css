@@ -6,8 +6,10 @@
 	width: 100%;
 	max-height: 1000px;
 	background: rgba(0, 0, 0, .75);
-
+	z-index: 2;
 	transition: top .2s;
+	padding: 25px;
+	box-sizing: border-box;
 }
 
 .trk-add-collection-panel-wrapper.open {

@@ -9,7 +9,7 @@ class Tracker extends React.Component {
 		return (
 			<div className="trk-tracker-records">
 				<span>{record.date}</span>
-				<span>{record.data.value}</span>
+				<span>{record.value}</span>
 			</div>
 		);
 	}
