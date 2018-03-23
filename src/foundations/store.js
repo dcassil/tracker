@@ -20,7 +20,9 @@ const keys = {
 			}
 		},
 		screen: {
-			orientation: window.screen.orientation.type,
+			orientation: {
+				portrait: window.matchMedia('(orientation: portrait)').matches,
+			}
 		},
 		chart: {
 			range: 'day',

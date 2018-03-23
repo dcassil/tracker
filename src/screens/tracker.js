@@ -117,7 +117,7 @@ class Tracker extends React.Component {
 		);
 	}
 	render() {
-		let isLandscape = this.props.orientation === 'landscape-primary';
+		let isPortrait = this.props.isPortrait;
 
 		if (!this.props.user || !this.props.q_trackerId) {
 			return this.returnToMainIfNoUser();
@@ -125,7 +125,7 @@ class Tracker extends React.Component {
 			window.clearTimeout(this.userTimeout);
 		}
 		
-		let body = isLandscape ? this.renderLandscape() : this.renderPortrait();
+		let body = isPortrait ? this.renderPortrait() : this.renderLandscape();
 
 		return (
 			<div className="trk-screen-tracker-wrapper">
@@ -143,7 +143,7 @@ class Tracker extends React.Component {
 
 export default foundations.store.subscribe(Tracker, {
 	chartRange: 'ui.chart.range',
-	orientation: 'ui.screen.orientation',
+	isPortrait: 'ui.screen.orientation.portrait',
 	user: 'user',
 	tracker: 'trackers.current.instance',
 });

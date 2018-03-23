@@ -47,12 +47,13 @@ const chart = {
 };
 
 const screen = {
-	setOrientation: function(key) {
-		foundations.store.set('ui.screen.orientation', key);
+	setIsPortrait: function(key) {
+		foundations.store.set('ui.screen.orientation.portrait', key);
+		console.log('set portrait =' + key);
 	},
 	initOrientaionListener: function() {
-		window.screen.orientation.addEventListener('change', e => {
-			module.exports.screen.setOrientation(e.target.type);
+		window.matchMedia('(orientation: portrait)').addListener(m => {
+			module.exports.screen.setIsPortrait(m.matches);
 		});
 	}
 };

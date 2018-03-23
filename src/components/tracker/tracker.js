@@ -68,6 +68,5 @@ class Tracker extends React.Component {
 
 export default foundations.store.subscribe(Tracker, {
 	currentTracker: 'trackers.current.instance',
-	orientation: 'ui.screen.orientation',
 });
 
