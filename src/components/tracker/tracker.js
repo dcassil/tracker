@@ -10,6 +10,7 @@ class Tracker extends React.Component {
 	constructor() {
 		super();
 
+		actions.ui.chart.setRange('day');
 		this.handleTrackerClick = this.handleTrackerClick.bind(this);
 		this.renderAddRecords = this.renderAddRecords.bind(this);
 		this.handleAddClick = this.handleAddClick.bind(this);
@@ -18,24 +19,19 @@ class Tracker extends React.Component {
 		e.stopPropagation();
 
 		actions.tracker.openAddRecordFor(this.props.tracker.id);
-		console.log('add hit');
-	}
-	handleEditClick(e) {
-		e.stopPropagation();
-		console.log('edit hit');
 	}
 	handleTrackerClick() {
 		window.location.href = '/#tracker/' + this.props.tracker.id;
 	}
 	renderChart(records) {
+		let consolidatedRecords = actions.tracker.records.consolidateByScope(records, 'day');
 		let chartOptions = {
 			primary: 'rgba(255,255,255,1)',
 			secondary: 'rgba(255,255,255,.3)',
 			displayLabels: true,
-			range: actions.tracker.records.getMaxForCurrentTracker(),
-			scope: 'day',
+			range: actions.tracker.records.getMax(consolidatedRecords),
 		};
-		let chartRecords = foundations.myChart.prepareData(records, chartOptions);
+		let chartRecords = foundations.myChart.prepareData(consolidatedRecords, chartOptions);
 
 		return <Line data={chartRecords} options={foundations.myChart.options(chartOptions)} heigth={90} width={240}/>;
 	}
@@ -74,12 +70,6 @@ class Tracker extends React.Component {
 							<Icon filename="plus-thin" onClick={this.handleAddClick}/>
 						</div>
 					</div>
-					
-					{/* <div className="trk-tracker-bottomBar">
-						<input type="button" className="trk-button" value="day" onClick={function() { actions.tracker.current.setChartScope('day'); }}/>
-						<input type="button" className="trk-button" value="week" onClick={function() { actions.tracker.current.setChartScope('week'); }}/>
-						<input type="button" className="trk-button" value="month" onClick={function() { actions.tracker.current.setChartScope('month'); }}/>
-					</div> */}
 				</div>
 			</div>
 		);
@@ -89,7 +79,6 @@ class Tracker extends React.Component {
 export default foundations.store.subscribe(Tracker, {
 	currentTracker: 'trackers.current.instance',
 	addRecordOpenFor: 'trackers.addRecordOpenFor',
-	chartScope: 'trackers.current.chart.scope',
 	orientation: 'ui.screen.orientation',
 });
 

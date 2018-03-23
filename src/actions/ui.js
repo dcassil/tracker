@@ -29,6 +29,12 @@ const collectionPanel = {
 	}
 };
 
+const chart = {
+	setRange: function(key) {
+		foundations.store.set('ui.chart.range', key);
+	}
+};
+
 const screen = {
 	setOrientation: function(key) {
 		foundations.store.set('ui.screen.orientation', key);
@@ -42,6 +48,7 @@ const screen = {
 
 module.exports = {
 	menu,
+	chart,
 	collectionPanel,
 	screen,
 };

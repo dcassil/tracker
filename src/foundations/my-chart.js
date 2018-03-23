@@ -95,11 +95,10 @@ function defaultDataOptions(primary, secondary) {
 function prepareData(records, _options) {
 	let options = Object.assign({}, defaultDataOptions(_options.primary, _options.secondary), _options);
 	let data = {};
-	let consolidatedRecords = records.length > 0 ? getConsolidatedDataByScope(records, options.scope) : [];
 
-	consolidatedRecords = sortData(consolidatedRecords);
-	data.labels = getLabels(consolidatedRecords);
-	data.values = getValues(consolidatedRecords);
+	records = sortData(records);
+	data.labels = getLabels(records);
+	data.values = getValues(records);
 	data.datasets = getDataSets(data.values, options);
 
 	return data;
@@ -119,7 +118,6 @@ function sortData(data) {
 function getDataSets(data, options) {
 	let dataSets = [Object.assign({}, options, { data })];
 
-	console.log(dataSets);
 	return dataSets;
 }
 
@@ -131,35 +129,6 @@ function getLabels(data) {
 	});
 }
 
-function getConsolidatedDataByScope(data, scope) {
-	let consolidatedData = {};
-
-	switch (scope) {
-		case 'day':
-			consolidatedData = consolidateByDay(data);
-			break;
-		case 'week':
-			consolidatedData = consolidateByWeek(data);
-			break;
-		case 'month':
-			consolidatedData = consolidateByMonth(data);
-			break;
-		case undefined:
-		default:
-			consolidatedData = consolidate(data);
-			break;
-	}
-
-	Object.keys(consolidatedData).forEach(key => {
-		let millsDate = new Date(key).getTime();
-
-		consolidatedData[millsDate] = consolidatedData[key];
-		delete consolidatedData[key];
-	});
-
-	return consolidatedData;
-}
-
 function getValues(records) {
 	let values = [];
 
@@ -169,72 +138,6 @@ function getValues(records) {
 	});
 
 	return values;
-}
-
-function consolidateByDay(data) {
-	let consolidatedData = [];
-
-	data.map(item => {
-		let d = new Date(item['date']); // eslint-disable-line
-
-		d = removeTime(d);
-		consolidatedData[d] = consolidatedData[d] || [];
-		consolidatedData[d].push(item.value);
-	});
-
-	return consolidatedData;
-}
-
-function consolidateByWeek(data) {
-	let consolidatedData = [];
-
-	data.map(item => {
-		let d = new Date(item['date']); // eslint-disable-line
-		
-		d = removeTime(d);
-		d.setDate(d.getDate() - d.getDay());
-		consolidatedData[d] = consolidatedData[d] || [];
-		consolidatedData[d].push(item.value);
-	});
-
-	return consolidatedData;
-}
-
-function consolidateByMonth(data) {
-	let consolidatedData = [];
-
-	data.map(item => {
-		let d = new Date(item['date']); // eslint-disable-line
-		
-		d = removeTime(d);
-		d.setDate(0);
-		consolidatedData[d] = consolidatedData[d] || [];
-		consolidatedData[d].push(item.value);
-	});
-
-	return consolidatedData;
-}
-
-function removeTime(d) {
-	d.setHours(0);
-	d.setMinutes(0);
-	d.setSeconds(0);
-	d.setMilliseconds(0);
-
-	return d;
-}
-
-function consolidate(data) {
-	let consolidatedData = [];
-
-	data.map(item => {
-		let d = new Date(item['date']); // eslint-disable-line
-		
-		consolidatedData[d] = consolidatedData[d] || [];
-		consolidatedData[d].push(item.value);
-	});
-
-	return consolidatedData;
 }
 
 module.exports = {

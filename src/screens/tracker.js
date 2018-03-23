@@ -24,15 +24,15 @@ class Tracker extends React.Component {
 	}
 	renderChart() {
 		if (!this.tracker) return null;
+		let consolidatedRecords = actions.tracker.records.consolidateByScope(this.tracker.records, this.props.chartRange);
 		let chartOptions = {
 			primary: 'rgba(255,255,255,1)',
 			secondary: 'rgba(255,255,255,.3)',
 			displayLabels: true,
-			range: actions.tracker.records.getMaxForCurrentTracker(),
-			scope: 'day',
+			range: actions.tracker.records.getMax(consolidatedRecords),
 		};
 		
-		let chartRecords = foundations.myChart.prepareData(this.tracker.records, chartOptions);
+		let chartRecords = foundations.myChart.prepareData(consolidatedRecords, chartOptions);
 
 		return <Line data={chartRecords} options={ foundations.myChart.options(chartOptions) } />;
 	}
@@ -43,6 +43,13 @@ class Tracker extends React.Component {
 			<div className="trk-tracker-portrait-wrapper">
 				<div className="trk-tracker-portrait-chart">
 					{Chart}
+				</div>
+				<div className="trk-tracker-portrait-chart-options">
+					<div className="trk-tracker-bottomBar">
+						<input type="button" className="trk-button" value="day" onClick={function() { actions.ui.chart.setRange('day'); }}/>
+						<input type="button" className="trk-button" value="week" onClick={function() { actions.ui.chart.setRange('week'); }}/>
+						<input type="button" className="trk-button" value="month" onClick={function() { actions.ui.chart.setRange('month'); }}/>
+					</div>
 				</div>
 				<div className="trk-tracker-portrait-details">
 					<div className="trk-tracker-portrait-details-row">
@@ -124,7 +131,7 @@ class Tracker extends React.Component {
 }
 
 export default foundations.store.subscribe(Tracker, {
-	chartScope: 'trackers.current.chart.scope',
+	chartRange: 'ui.chart.range',
 	orientation: 'ui.screen.orientation',
 	user: 'user',
 	trackers: 'trackers.all',

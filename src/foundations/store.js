@@ -17,6 +17,9 @@ const keys = {
 		screen: {
 			orientation: window.screen.orientation.type,
 		},
+		chart: {
+			range: 'day',
+		}
 	},
 	animate: {
 		after: {
@@ -27,9 +30,6 @@ const keys = {
 	trackers: {
 		current: {
 			instance: null,
-			chart: {
-				scope: 'day',
-			}
 		},
 		all: [],
 		addRecordOpenFor: null,

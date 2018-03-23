@@ -38,7 +38,7 @@ const records = {
 
 		if (!tracker || !tracker.records.length > 0) return 0;
 
-		return tracker.records.map(r => r.value * 1).reduce((a, b) => (a * 1) + (b * 1), 0) / tracker.records.length;
+		return Math.round(tracker.records.map(r => r.value * 1).reduce((a, b) => (a * 1) + (b * 1), 0) / tracker.records.length);
 	},
 	getMinForCurrentTracker() {
 		let tracker = module.exports.getCurrent();
@@ -54,8 +54,119 @@ const records = {
 
 		return Math.max(...tracker.records.map(r => r.value * 1));
 	},
+	getMax(records) {
+		if (records.length <= 0) return 0;
+
+		let data = getValues(records);
+
+		return Math.max(...data);
+	},
+	consolidateByScope: function(data, scope) {
+		let consolidatedData = {};
+	
+		switch (scope) {
+			case 'day':
+				consolidatedData = consolidateByDay(data);
+				break;
+			case 'week':
+				consolidatedData = consolidateByWeek(data);
+				break;
+			case 'month':
+				consolidatedData = consolidateByMonth(data);
+				break;
+			case undefined:
+			default:
+				consolidatedData = consolidate(data);
+				break;
+		}
+	
+		Object.keys(consolidatedData).forEach(key => {
+			let millsDate = new Date(key).getTime();
+	
+			consolidatedData[millsDate] = consolidatedData[key];
+			delete consolidatedData[key];
+		});
+	
+		return consolidatedData;
+	}
 };
 
+function consolidateByDay(data) {
+	let consolidatedData = [];
+
+	data.map(item => {
+		let d = new Date(item['date']); // eslint-disable-line
+
+		d = removeTime(d);
+		consolidatedData[d] = consolidatedData[d] || [];
+		consolidatedData[d].push(item.value);
+	});
+
+	return consolidatedData;
+}
+
+function consolidateByWeek(data) {
+	let consolidatedData = [];
+
+	data.map(item => {
+		let d = new Date(item['date']); // eslint-disable-line
+		
+		d = removeTime(d);
+		d.setDate(d.getDate() - d.getDay());
+		consolidatedData[d] = consolidatedData[d] || [];
+		consolidatedData[d].push(item.value);
+	});
+
+	return consolidatedData;
+}
+
+function consolidateByMonth(data) {
+	let consolidatedData = [];
+
+	data.map(item => {
+		let d = new Date(item['date']); // eslint-disable-line
+		
+		d = removeTime(d);
+		d.setDate(1);
+		consolidatedData[d] = consolidatedData[d] || [];
+		consolidatedData[d].push(item.value);
+	});
+
+	return consolidatedData;
+}
+
+function removeTime(d) {
+	d.setHours(0);
+	d.setMinutes(0);
+	d.setSeconds(0);
+	d.setMilliseconds(0);
+
+	return d;
+}
+
+function getValues(records) {
+	let values = [];
+
+	Object.keys(records).forEach(date => {
+		// sum up all values for each date.
+		values.push(records[date].reduce((a, b) => (a * 1) + (b * 1), 0));
+	});
+
+	return values;
+}
+
+function consolidate(data) {
+	let consolidatedData = [];
+
+	data.map(item => {
+		let d = new Date(item['date']); // eslint-disable-line
+		
+		consolidatedData[d] = consolidatedData[d] || [];
+		consolidatedData[d].push(item.value);
+	});
+
+	return consolidatedData;
+}
 function set(data) {
 	foundations.store.set('trackers.all', data);
 }
