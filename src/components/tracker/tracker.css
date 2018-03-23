@@ -1,24 +1,34 @@
 .trk-tracker {
 	width: 100%;
 	height: 130px;
-	background-color: white;
 	color: black;
 	box-sizing: border-box;
 	display: flex;
-    flex-direction: column;
+	flex-direction: row;
+	border-bottom: 1px solid white;
 }
 
 .trk-tracker-body {
-	height: 100px;
+	height: 100%;
 	display: flex;
-    flex-direction: row;
+    flex-direction: column;
 	justify-content: space-between;
-	padding: 5px;
-    position: relative;
 }
 
 .trk-tracker-wrapper {
 	margin: 1px;
+}
+
+.trk-tracker-leftCol {
+	flex: 3 3 auto;
+	width: 66%;
+}
+
+.trk-tracker-rightCol {
+	flex: 1 1 auto;
+    width: 33%;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 .trk-tracker-topBar {
@@ -29,8 +39,9 @@
     height: 30px;
 }
 
-.trk-tracker-moreWrapper {
-	width: 40px;
+.trk-tracker-title {
+	padding: 5px;
+	color: white;
 }
 
 .trk-tracker-bottomBar {
@@ -49,9 +60,11 @@
 
 .trk-tracker-graphWrapper {
 	display: flex;
-	height: 90px;
-	width: 240px;
-	position: relative;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background: rgba(0,0,0,.2);
+    padding: 10px;
 }
 
 .trk-tracker-graphWrapper canvas {
@@ -59,8 +72,11 @@
 }
 
 .trk-tracker-addWrapper {
-	width: 80px;
     height: 100%;
+    width: 100%;
     padding: 10px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }

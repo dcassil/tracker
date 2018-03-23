@@ -1,5 +1,5 @@
 
-function getChartOptions(primary, second, displayLabels) {
+function getChartOptions(opt) {
 	return {
 		responsive: true,
 		maintainAspectRatio: false,
@@ -8,16 +8,16 @@ function getChartOptions(primary, second, displayLabels) {
 		},
 		scales: {
 			xAxes: [{
-				display: displayLabels,
-				color: primary,
+				display: opt.displayLabels,
+				color: opt.secondary,
 				scaleLabel: {
 					display: false,
 					labelString: 'date'
 				},
 				gridLines: {
 					display: true,
-					color: second,
-					stepSize: .1,
+					color: opt.secondary,
+					stepSize: (opt.range / 10),
 					scale: {
 						drawTicks: true,
 					}
@@ -25,28 +25,34 @@ function getChartOptions(primary, second, displayLabels) {
 				ticks: {
 					display: true,
 					beginAtZero: true,
-					fontColor: primary,
-					fontSize: 12,
-					stepSize: .1,
+					fontColor: opt.secondary,
+					fontSize: 10,
+					stepSize: (opt.range / 10),
 					drawTicks: true,
+					
 				},
 			}],
 			yAxes: [{
-				display: displayLabels,
-				color: primary,
+				display: opt.displayLabels,
+				color: opt.secondary,
 				scaleLabel: {
 					display: false,
 					labelString: 'Value'
 				},
 				gridLines: {
 					display: true,
-					color: second,
+					color: opt.secondary,
+					scale: {
+						drawTicks: true,
+					}
 				},
 				ticks: {
+					display: true,
 					beginAtZero: true,
-					fontColor: primary,
-					fontSize: 12,
-					stepSize: 1,
+					fontColor: opt.secondary,
+					fontSize: 10,
+					stepSize: (opt.range / 10),
+					drawTicks: true,
 				}
 			}]
 		},
@@ -69,6 +75,7 @@ function defaultDataOptions(primary, secondary) {
 		color: primary,
 		backgroundColor: 'rgba(75,192,192,0.4)',
 		borderColor: primary,
+		borderWidth: 1,
 		borderCapStyle: 'butt',
 		borderDash: [],
 		borderDashOffset: 0.0,
@@ -158,7 +165,7 @@ function getValues(records) {
 
 	Object.keys(records).forEach(date => {
 		// sum up all values for each date.
-		values.push(records[date].reduce((a, b) => a + b, 0));
+		values.push(records[date].reduce((a, b) => (a * 1) + (b * 1), 0));
 	});
 
 	return values;

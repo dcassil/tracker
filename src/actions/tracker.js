@@ -25,6 +25,37 @@ let remote = {
 	}
 };
 
+const records = {
+	getTotalForCurrentTracker() {
+		let tracker = module.exports.getCurrent();
+
+		if (!tracker || !tracker.records.length > 0) return 0;
+
+		return tracker.records.map(r => r.value * 1).reduce((a, b) => a + b, 0);
+	},
+	getAverageForCurrentTracker() {
+		let tracker = module.exports.getCurrent();
+
+		if (!tracker || !tracker.records.length > 0) return 0;
+
+		return tracker.records.map(r => r.value * 1).reduce((a, b) => (a * 1) + (b * 1), 0) / tracker.records.length;
+	},
+	getMinForCurrentTracker() {
+		let tracker = module.exports.getCurrent();
+
+		if (!tracker || !tracker.records.length > 0) return 0;
+
+		return Math.min(...tracker.records.map(r => r.value * 1));
+	},
+	getMaxForCurrentTracker() {
+		let tracker = module.exports.getCurrent();
+
+		if (!tracker || !tracker.records.length > 0) return 0;
+
+		return Math.max(...tracker.records.map(r => r.value * 1));
+	},
+};
+
 function set(data) {
 	foundations.store.set('trackers.all', data);
 }
@@ -37,6 +68,10 @@ function setCurrentById(id) {
 	let tracker = module.exports.getById(id);
 
 	module.exports.setCurrent(tracker);
+}
+
+function getCurrent() {
+	return foundations.store.get('trackers.current.instance');
 }
 
 function getById(id) {
@@ -55,11 +90,11 @@ function closeAddRecord() {
 	foundations.store.set('trackers.addRecordOpenFor', null);
 }
 
-
-
 module.exports = {
 	getById,
+	getCurrent,
 	remote,
+	records,
 	set,
 	setCurrent,
 	setCurrentById,
