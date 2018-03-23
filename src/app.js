@@ -4,7 +4,6 @@ import 'app.css';
 import routes from 'routes/routes'; // eslint-disable-line
 import Screens from 'screens/screens';
 import TopBar from 'components/topBar/topBar';
-import BottomNav from 'components/bottomNav/bottomNav';
 import actions from 'actions/*.js';
 import foundations from 'foundations/*.js';
 
@@ -16,7 +15,6 @@ class App extends React.Component {
 			<div className="trk-app-wrapper">
 				<TopBar />
 				<Screens />
-				<BottomNav />
 			</div>
 		);
 	}

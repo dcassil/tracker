@@ -47,6 +47,6 @@
     padding: 15px;
     border: 1px solid;
     margin-top: 5px;
-    border-radius: 0 40px 0 40px;
+    border-radius: 3px;
     background: rgba(0,0,0,.2);
 }

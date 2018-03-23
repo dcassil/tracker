@@ -35,10 +35,10 @@ class Tracker extends React.Component {
 		tracker.records.push(record);
 
 		actions.tracker.remote.save(tracker);
-		actions.tracker.closeAddRecord();
+		actions.ui.record.addPanel.close();
 	}
 	handleCancelClick() {
-		actions.tracker.closeAddRecord();
+		actions.ui.record.addPanel.close();
 	}
 	render() {
 		let now = new Date();

@@ -1,25 +1,31 @@
 .trk-main-wrapper {
 	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	margin-left: auto;
-	margin-right: auto;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
 }
 
 .trk-screen-wrapper {
-	overflow: scroll;
-    height: 100%;
+	position: fixed;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .trk-main-body {
 	display: flex;
-	justify-content: space-around;
-	flex-direction: row;
+    flex-direction: column;
 }
 
-.trk-trackers-wrapper {
-	width: 100%;
-	box-sizing: border-box;
-	height: 100%;
+.trk-main-trackers {
 	overflow: scroll;
+}
+
+.trk-main-bottom-bar {
+	border-top: 1px solid;
+	height: 60px;
+    padding: 5px;
 }

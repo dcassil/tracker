@@ -3,6 +3,7 @@ import actions from 'actions/*.js';
 import foundations from 'foundations/*.js';
 import {Line} from 'react-chartjs-2'; //eslint-disable-line
 import Record from 'components/tracker/record/trackerRecord';
+import Icon from 'components/icon/icon';
 import 'screens/tracker.css';
 
 class Tracker extends React.Component {
@@ -10,6 +11,18 @@ class Tracker extends React.Component {
 		super();
 
 		this.returnToMainIfNoUser = this.returnToMainIfNoUser.bind(this);
+		this.handleAddClick = this.handleAddClick.bind(this);
+	}
+	componentDidMount() {
+		actions.tracker.setCurrentId(decodeURI(this.props.q_trackerId));
+	}
+	componentWillUpdate() {
+		// this.props.tracker = actions.tracker.getById(nextProps.trackerId);
+	}
+	handleAddClick(e) {
+		e.stopPropagation();
+
+		actions.ui.record.addPanel.openFor(this.props.tracker.id);
 	}
 	returnToMainIfNoUser() {
 		this.userTimeout = window.setTimeout(() => {
@@ -23,8 +36,8 @@ class Tracker extends React.Component {
 		);
 	}
 	renderChart() {
-		if (!this.tracker) return null;
-		let consolidatedRecords = actions.tracker.records.consolidateByScope(this.tracker.records, this.props.chartRange);
+		if (!this.props.tracker) return null;
+		let consolidatedRecords = actions.tracker.records.consolidateByScope(this.props.tracker.records, this.props.chartRange);
 		let chartOptions = {
 			primary: 'rgba(255,255,255,1)',
 			secondary: 'rgba(255,255,255,.3)',
@@ -65,8 +78,6 @@ class Tracker extends React.Component {
 								<span>{actions.tracker.records.getTotalForCurrentTracker()}</span>
 							</div>
 						</div>
-					</div>
-					<div className="trk-tracker-portrait-details-row">
 						<div className="trk-tracker-portrait-details-item">
 							<span>Max</span>
 							<div className="trk-tracker-portrait-details-item-value">
@@ -81,6 +92,9 @@ class Tracker extends React.Component {
 						</div>
 					</div>
 				</div>
+				<div className="trk-tracker-portrait-details">
+					<Icon filename="plus-thin" onClick={this.handleAddClick}/>
+				</div>
 				<div className="trk-tracker-portrait-records">
 					{this.renderRecords()}
 				</div>
@@ -91,11 +105,11 @@ class Tracker extends React.Component {
 		return this.renderChart();
 	}
 	renderRecords() {
-		if (!this.tracker) return null;
+		if (!this.props.tracker) return null;
 
 		return (
 			<div className="trk-tracker-records-wrapper">
-				{this.tracker.records.map(record => {
+				{this.props.tracker.records.map(record => {
 					record.date = new Date(record.date).toString();
 					return <Record {...record} key={record.date}/>;
 				})}
@@ -103,23 +117,20 @@ class Tracker extends React.Component {
 		);
 	}
 	render() {
-		let trackerId = this.props.trackerId && decodeURI(this.props.trackerId);
 		let isLandscape = this.props.orientation === 'landscape-primary';
 
-		if (!this.props.user || !trackerId) {
+		if (!this.props.user || !this.props.q_trackerId) {
 			return this.returnToMainIfNoUser();
 		} else {
 			window.clearTimeout(this.userTimeout);
 		}
-		this.tracker = this.tracker || actions.tracker.getById(trackerId);
-		actions.tracker.setCurrent(this.tracker);
 		
 		let body = isLandscape ? this.renderLandscape() : this.renderPortrait();
 
 		return (
 			<div className="trk-screen-tracker-wrapper">
 				<div className="trk-tracker-topBar">
-					<span>{this.tracker && this.tracker.id}</span>
+					<span>{this.props.tracker && this.props.tracker.id}</span>
 					<span><a href="/#">Go Back</a></span>
 				</div>
 				<div className="trk-screen-tracker-body">
@@ -134,6 +145,6 @@ export default foundations.store.subscribe(Tracker, {
 	chartRange: 'ui.chart.range',
 	orientation: 'ui.screen.orientation',
 	user: 'user',
-	trackers: 'trackers.all',
+	tracker: 'trackers.current.instance',
 });
 

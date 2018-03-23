@@ -1,6 +1,8 @@
 import React from 'react';
+import actions from 'actions/*.js';
 import foundations from 'foundations/*.js';
 import Tracker from 'components/tracker/tracker';
+import Icon from 'components/icon/icon';
 import 'screens/main.css';
 
 class Main extends React.Component {
@@ -23,7 +25,7 @@ class Main extends React.Component {
 	}
 	renderTrackers(trackers) {
 		return (
-			<div className="trk-trackers-wrapper">
+			<div className="trk-main-trackers">
 				{trackers.map(tracker => {
 					return <Tracker {...{ tracker: tracker }} key={tracker.id}/>;
 				})}
@@ -37,8 +39,10 @@ class Main extends React.Component {
 			<div className="trk-main-wrapper">
 				<div className="trk-main-body">
 					{display}
+					<div className="trk-main-bottom-bar">
+						<Icon onClick={actions.ui.collectionPanel.open} filename="plus"/>
+					</div>
 				</div>
-				
 			</div>
 		);
 	}

@@ -11,12 +11,15 @@ function init(actionsRef) {
 
 let remote = {
 	save: function(data) {
-		actions.data.remote.doc.set('Trackers', data.name, data);
+		actions.data.remote.doc.set('Trackers', data.name, data).then(() => {
+			module.exports.remote.load();
+		});
 	},
 	load: function() {
 		actions.data.remote.collection.get('Trackers')
 			.then(data => {
 				module.exports.set(data);
+				setCurrentById(getCurrentId());
 			});
 	},
 	loadAndInitListeners: function() {
@@ -27,28 +30,28 @@ let remote = {
 
 const records = {
 	getTotalForCurrentTracker() {
-		let tracker = module.exports.getCurrent();
+		let tracker = getCurrent();
 
 		if (!tracker || !tracker.records.length > 0) return 0;
 
 		return tracker.records.map(r => r.value * 1).reduce((a, b) => a + b, 0);
 	},
 	getAverageForCurrentTracker() {
-		let tracker = module.exports.getCurrent();
+		let tracker = getCurrent();
 
 		if (!tracker || !tracker.records.length > 0) return 0;
 
 		return Math.round(tracker.records.map(r => r.value * 1).reduce((a, b) => (a * 1) + (b * 1), 0) / tracker.records.length);
 	},
 	getMinForCurrentTracker() {
-		let tracker = module.exports.getCurrent();
+		let tracker = getCurrent();
 
 		if (!tracker || !tracker.records.length > 0) return 0;
 
 		return Math.min(...tracker.records.map(r => r.value * 1));
 	},
 	getMaxForCurrentTracker() {
-		let tracker = module.exports.getCurrent();
+		let tracker = getCurrent();
 
 		if (!tracker || !tracker.records.length > 0) return 0;
 
@@ -175,14 +178,23 @@ function setCurrent(data) {
 	foundations.store.set('trackers.current.instance', data);
 }
 
-function setCurrentById(id) {
-	let tracker = module.exports.getById(id);
+function setCurrentId(id) {
+	foundations.store.set('trackers.current.id', id);
+	setCurrentById(id);
+}
 
-	module.exports.setCurrent(tracker);
+function setCurrentById(id) {
+	let tracker = getById(id);
+
+	setCurrent(tracker);
 }
 
 function getCurrent() {
 	return foundations.store.get('trackers.current.instance');
+}
+
+function getCurrentId() {
+	return foundations.store.get('trackers.current.id');
 }
 
 function getById(id) {
@@ -193,25 +205,13 @@ function getById(id) {
 	});
 }
 
-function openAddRecordFor(id) {
-	foundations.store.set('trackers.addRecordOpenFor', id);
-}
-
-function closeAddRecord() {
-	foundations.store.set('trackers.addRecordOpenFor', null);
-}
-
 module.exports = {
 	getById,
-	getCurrent,
 	remote,
 	records,
 	set,
-	setCurrent,
-	setCurrentById,
+	setCurrentId,
 	init,
-	openAddRecordFor,
-	closeAddRecord,
 };
 
 

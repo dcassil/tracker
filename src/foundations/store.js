@@ -14,6 +14,11 @@ const keys = {
 		addCollectionPanel: {
 			isOpen: false,
 		},
+		record: {
+			addPanel: {
+				openFor: null,
+			}
+		},
 		screen: {
 			orientation: window.screen.orientation.type,
 		},
@@ -30,9 +35,9 @@ const keys = {
 	trackers: {
 		current: {
 			instance: null,
+			id: null,
 		},
 		all: [],
-		addRecordOpenFor: null,
 	}
 };
 

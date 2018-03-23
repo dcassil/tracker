@@ -1,26 +1,32 @@
 import React from 'react';
 import foundations from 'foundations/*.js';
-import actions from 'actions/*.js';
 import 'components/topBar/topBar.css';
 import TopMenu from 'components/topBar/menu/topBarMenu';
-import AddCollectionPanel from 'components/tracker/add/addTracker';
-import Icon from 'components/icon/icon.js';
+import AddRecordPanel from 'components/tracker/record/add/addTrackerRecord';
+import AddTrackerPanel from 'components/tracker/add/addTracker';
 
 class TopBarBase extends React.Component {
 	render() {
 		let collectionPanelIsOpen = this.props.collectionPanelIsOpen;
-		let content = null;
+		let addRecordOpenFor = this.props.addRecordOpenFor;
+		let tracker = this.props.tracker;
+		let AddTracker = null;
+		let AddRecord = null;
 
 		if (collectionPanelIsOpen) {
-			content = <AddCollectionPanel />;
-		} else {
-			content = <Icon onClick={actions.ui.collectionPanel.open} filename="plus"/>;
+			AddTracker = <AddTrackerPanel />;
 		}
+
+		if (tracker && addRecordOpenFor === tracker.id) {
+			AddRecord = <AddRecordPanel tracker={this.props.tracker} />;
+		}
+
 		return (
 			<div className="trk-topbar-wrapper">
 				<TopMenu />
 				<div>
-					{content}
+					{AddTracker}
+					{AddRecord}
 				</div>
 			</div>
 		);
@@ -29,5 +35,7 @@ class TopBarBase extends React.Component {
 
 export default foundations.store.subscribe(TopBarBase, {
 	collectionPanelIsOpen: 'ui.addCollectionPanel.isOpen',
+	addRecordOpenFor: 'ui.record.addPanel.openFor',
+	tracker: 'trackers.current.instance',
 });
 

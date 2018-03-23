@@ -29,6 +29,17 @@ const collectionPanel = {
 	}
 };
 
+const record = {
+	addPanel: {
+		openFor: function(id) {
+			foundations.store.set('ui.record.addPanel.openFor', id);
+		},
+		close: function() {
+			foundations.store.set('ui.record.addPanel.openFor', null);
+		}
+	}
+};
+
 const chart = {
 	setRange: function(key) {
 		foundations.store.set('ui.chart.range', key);
@@ -50,6 +61,7 @@ module.exports = {
 	menu,
 	chart,
 	collectionPanel,
+	record,
 	screen,
 };
 

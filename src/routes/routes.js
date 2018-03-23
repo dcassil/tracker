@@ -10,7 +10,7 @@ router.get('/signin', function() {
 });
 
 router.get('/tracker/:id', function(route) {
-	actions.screens.setSelected('tracker', { trackerId: route.params.id });
+	actions.screens.setSelected('tracker', { q_trackerId: route.params.id });
 });
 
 router.useHashbang();

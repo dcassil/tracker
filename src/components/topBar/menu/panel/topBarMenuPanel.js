@@ -23,7 +23,6 @@ class TopBarMenuPanel extends React.Component {
 		return (
 			<div className={this.props.className}>
 				<div className="trk-topbar-menu-panel-top"></div>
-				<div></div>
 				{userInfo}
 			</div>);
 	}

@@ -2,7 +2,6 @@ import React from 'react';
 import foundations from 'foundations/*.js';
 import Icon from 'components/icon/icon';
 import actions from 'actions/*.js';
-import AddRecord from 'components/tracker/record/add/addTrackerRecord';
 import 'components/tracker/tracker.css';
 import {Line} from 'react-chartjs-2'; //eslint-disable-line
 
@@ -12,15 +11,16 @@ class Tracker extends React.Component {
 
 		actions.ui.chart.setRange('day');
 		this.handleTrackerClick = this.handleTrackerClick.bind(this);
-		this.renderAddRecords = this.renderAddRecords.bind(this);
 		this.handleAddClick = this.handleAddClick.bind(this);
 	}
 	handleAddClick(e) {
 		e.stopPropagation();
 
-		actions.tracker.openAddRecordFor(this.props.tracker.id);
+		actions.tracker.setCurrentId(this.props.tracker.id);
+		actions.ui.record.addPanel.openFor(this.props.tracker.id);
 	}
 	handleTrackerClick() {
+		actions.tracker.setCurrentId(this.props.tracker.id);
 		window.location.href = '/#tracker/' + this.props.tracker.id;
 	}
 	renderChart(records) {
@@ -35,28 +35,18 @@ class Tracker extends React.Component {
 
 		return <Line data={chartRecords} options={foundations.myChart.options(chartOptions)} heigth={90} width={240}/>;
 	}
-	renderAddRecords() {
-		let tracker = this.props.tracker;
 
-		return <AddRecord tracker={tracker} />;
-	}
 	render() {
 		let records = this.props.tracker.records || [];
 		let Chart = null;
-		let AddRecord = null;
 
 		if (records.length > 0) {
 			Chart = this.renderChart(records);
 		}
 
-		if (this.props.addRecordOpenFor === this.props.tracker.id) {
-			AddRecord = this.renderAddRecords();
-		}
-
 		return (
 			<div className="trk-tracker-wrapper">
 				<div className="trk-tracker">
-					{AddRecord}
 					<div className="trk-tracker-leftCol">
 						<div className="trk-tracker-body" onClick={this.handleTrackerClick}>
 							<span className="trk-tracker-title" >{this.props.tracker.name}</span>
@@ -78,7 +68,6 @@ class Tracker extends React.Component {
 
 export default foundations.store.subscribe(Tracker, {
 	currentTracker: 'trackers.current.instance',
-	addRecordOpenFor: 'trackers.addRecordOpenFor',
 	orientation: 'ui.screen.orientation',
 });
 
