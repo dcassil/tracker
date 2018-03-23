@@ -36,12 +36,10 @@ class Main extends React.Component {
 		let display = !this.props.user ? this.renderNotSignedIn() : this.renderSignedIn();
 
 		return (
-			<div className="trk-main-wrapper">
-				<div className="trk-main-body">
-					{display}
-					<div className="trk-main-bottom-bar">
-						<Icon onClick={actions.ui.collectionPanel.open} filename="plus"/>
-					</div>
+			<div className="trk-main-body">
+				{display}
+				<div className="trk-main-bottom-bar">
+					<Icon onClick={actions.ui.collectionPanel.open} filename="plus"/>
 				</div>
 			</div>
 		);

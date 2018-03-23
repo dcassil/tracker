@@ -1,11 +1,6 @@
 .trk-tracker {
-	width: 100%;
-	height: 130px;
-	color: black;
-	box-sizing: border-box;
+	height: 131px;
 	display: flex;
-	justify-content: space-between;
-	flex-direction: row;
 	border-bottom: 1px solid white;
 }
 

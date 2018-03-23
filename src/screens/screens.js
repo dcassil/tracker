@@ -1,5 +1,6 @@
 import React from 'react';
 import actions from 'actions/*.js';
+import TopBar from 'components/topBar/topBar';
 import foundations from 'foundations/*.js';
 // import main from 'screens/main';
 
@@ -10,10 +11,10 @@ class Screens extends React.Component {
 		let Screen = actions.screens.getScreenByName(name); 
 
 		return (
-			<div className="trk-screen-wrapper">
+			<div className="trk-screen">
+				<TopBar />
 				<Screen {...options}/>
 			</div>
-			
 		);
 	}
 }

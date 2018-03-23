@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import 'app.css';
 import routes from 'routes/routes'; // eslint-disable-line
 import Screens from 'screens/screens';
-import TopBar from 'components/topBar/topBar';
 import actions from 'actions/*.js';
 import foundations from 'foundations/*.js';
 
@@ -11,12 +10,7 @@ actions.ui.screen.initOrientaionListener();
 
 class App extends React.Component {
 	render() {
-		return (
-			<div className="trk-app-wrapper">
-				<TopBar />
-				<Screens />
-			</div>
-		);
+		return <Screens />;
 	}
 }
 

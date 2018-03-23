@@ -45,20 +45,18 @@ class Tracker extends React.Component {
 		}
 
 		return (
-			<div className="trk-tracker-wrapper">
-				<div className="trk-tracker">
-					<div className="trk-tracker-leftCol">
-						<div className="trk-tracker-body" onClick={this.handleTrackerClick}>
-							<span className="trk-tracker-title" >{this.props.tracker.name}</span>
-							<div className="trk-tracker-graphWrapper">
-								{Chart}
-							</div>
+			<div className="trk-tracker">
+				<div className="trk-tracker-leftCol">
+					<div className="trk-tracker-body" onClick={this.handleTrackerClick}>
+						<span className="trk-tracker-title" >{this.props.tracker.name}</span>
+						<div className="trk-tracker-graphWrapper">
+							{Chart}
 						</div>
 					</div>
-					<div className="trk-tracker-rightCol">
-						<div className="trk-tracker-addWrapper">
-							<Icon filename="plus-thin" onClick={this.handleAddClick}/>
-						</div>
+				</div>
+				<div className="trk-tracker-rightCol">
+					<div className="trk-tracker-addWrapper">
+						<Icon filename="plus-thin" onClick={this.handleAddClick}/>
 					</div>
 				</div>
 			</div>

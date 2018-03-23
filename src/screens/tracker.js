@@ -95,9 +95,7 @@ class Tracker extends React.Component {
 				<div className="trk-tracker-portrait-details">
 					<Icon filename="plus-thin" onClick={this.handleAddClick}/>
 				</div>
-				<div className="trk-tracker-portrait-records">
-					{this.renderRecords()}
-				</div>
+				{this.renderRecords()}
 			</div>
 		);
 	}
@@ -133,9 +131,7 @@ class Tracker extends React.Component {
 					<span>{this.props.tracker && this.props.tracker.id}</span>
 					<span><a href="/#">Go Back</a></span>
 				</div>
-				<div className="trk-screen-tracker-body">
-					{body}
-				</div>
+				{body}
 			</div>
 		);
 	}
