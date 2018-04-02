@@ -9,7 +9,7 @@ function getChartOptions(opt) {
 		scales: {
 			xAxes: [{
 				display: opt.displayLabels,
-				color: opt.secondary,
+				color: opt.primary,
 				scaleLabel: {
 					display: false,
 					labelString: 'date'
@@ -25,8 +25,8 @@ function getChartOptions(opt) {
 				ticks: {
 					display: true,
 					beginAtZero: true,
-					fontColor: opt.secondary,
-					fontSize: 10,
+					fontColor: opt.primary,
+					fontSize: 0,
 					stepSize: (opt.range / 10),
 					drawTicks: true,
 					
@@ -34,7 +34,7 @@ function getChartOptions(opt) {
 			}],
 			yAxes: [{
 				display: opt.displayLabels,
-				color: opt.secondary,
+				color: opt.primary,
 				scaleLabel: {
 					display: false,
 					labelString: 'Value'
@@ -49,7 +49,7 @@ function getChartOptions(opt) {
 				ticks: {
 					display: true,
 					beginAtZero: true,
-					fontColor: opt.secondary,
+					fontColor: opt.primary,
 					fontSize: 10,
 					stepSize: (opt.range / 10),
 					drawTicks: true,
@@ -97,8 +97,8 @@ function prepareData(records, _options) {
 	let data = {};
 
 	records = sortData(records);
-	data.labels = getLabels(records);
-	data.values = getValues(records);
+	data.labels = Object.keys(records).map(key => records[key].label);
+	data.values = getValues(Object.keys(records).map(key => records[key].value));
 	data.datasets = getDataSets(data.values, options);
 
 	return data;
@@ -119,14 +119,6 @@ function getDataSets(data, options) {
 	let dataSets = [Object.assign({}, options, { data })];
 
 	return dataSets;
-}
-
-function getLabels(data) {
-	return Object.keys(data).map(key => {
-		let x = new Date(key * 1).toLocaleDateString();
-
-		return x.substring(0, x.length - 4) + x.substring(x.length - 2, x.length);
-	});
 }
 
 function getValues(records) {

@@ -17,17 +17,16 @@
 
 .trk-tracker-portrait-chart-options {
     display: flex;
+    flex-direction: column;
+    margin: 15px 25px 0 25px;
 }
 
-.trk-tracker-portrait-chart-options input {
-    border: none;
-    background-color: transparent;
-    font-weight: bolder;
-    padding: 5px;
-    color: white;
-    display: block;
-    visibility: visible;
-    text-decoration: underline;
+.trk-tracker-chart-range-label {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    margin-top: 8px;
 }
 
 .trk-tracker-portrait-details-row {

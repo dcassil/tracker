@@ -24,13 +24,16 @@ class Tracker extends React.Component {
 		window.location.href = '/#tracker/' + this.props.tracker.id;
 	}
 	renderChart(records) {
-		let consolidatedRecords = actions.tracker.records.consolidateByScope(records, 'day');
+		records = records.slice(-1 * 10);
+
+		let consolidatedRecords = actions.tracker.records.consolidateByScope(records, 'day', 10);
 		let chartOptions = {
 			primary: 'rgba(255,255,255,1)',
 			secondary: 'rgba(255,255,255,.3)',
 			displayLabels: true,
 			range: actions.tracker.records.getMax(consolidatedRecords),
 		};
+
 		let chartRecords = foundations.myChart.prepareData(consolidatedRecords, chartOptions);
 
 		return <Line data={chartRecords} options={foundations.myChart.options(chartOptions)} heigth={90} width={240}/>;

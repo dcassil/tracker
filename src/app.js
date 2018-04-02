@@ -14,6 +14,35 @@ class App extends React.Component {
 	}
 }
 
+window.createTestData = function(name, xHours, xDay) {
+	let _date = new Date();
+	let hour = 3600000;
+	let day = hour * 24;
+	let tracker = {
+		id: name,
+		name: name,
+		records: [],
+	};
+
+	for (let i = 0; i < xHours; i++) {
+		_date.setTime(_date.getTime() + hour);
+		tracker.records.push({
+			date: _date.getTime(),
+			value: Math.round(Math.random() * 10),
+		});
+	}
+
+	for (let i = 0; i < xDay; i++) {
+		_date.setTime(_date.getTime() + day);
+		tracker.records.push({
+			date: _date.getTime(),
+			value: Math.round(Math.random() * 10),
+		});
+	}
+
+	actions.tracker.remote.save(tracker);
+};
+
 foundations.myFirebase.auth().onAuthStateChanged(function(user) {
 	if (user) {
 		// User is signed in.

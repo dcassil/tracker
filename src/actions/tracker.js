@@ -25,6 +25,16 @@ let remote = {
 	loadAndInitListeners: function() {
 		module.exports.remote.load();
 		actions.data.remote.collection.listenToDBCollectionChange('Trackers', 'trackers.all');
+	},
+	records: {
+		save: function(trackerKey, UTCTime, newRecord) {
+			let records = actions.data.remote.doc.get('Records', UTCTime);
+
+			records.push(newRecord);
+			actions.data.remote.doc.set('Records', UTCTime, records).then(() => {
+				module.exports.remote.load();
+			});
+		}
 	}
 };
 
@@ -64,10 +74,13 @@ const records = {
 
 		return Math.max(...data);
 	},
-	consolidateByScope: function(data, scope) {
+	consolidateByScope: function(data, scope, limit) {
 		let consolidatedData = {};
 	
 		switch (scope) {
+			case 'hour':
+				consolidatedData = consolidateByHour(data);
+				break;
 			case 'day':
 				consolidatedData = consolidateByDay(data);
 				break;
@@ -82,17 +95,67 @@ const records = {
 				consolidatedData = consolidate(data);
 				break;
 		}
+		let sortedDateKeys = Object.keys(consolidatedData).sort();
+		let limitedDateKeys = sortedDateKeys.slice(limit * -1);
+		let newData = {};
+
+		limitedDateKeys.forEach(key => {
+			let label = getLabel(key);
+			let value = consolidatedData[key];
 	
-		Object.keys(consolidatedData).forEach(key => {
-			let millsDate = new Date(key).getTime();
-	
-			consolidatedData[millsDate] = consolidatedData[key];
-			delete consolidatedData[key];
+			newData[key] = {
+				label,
+				value
+			};
 		});
 	
-		return consolidatedData;
+		return newData;
 	}
 };
+
+function getLabel(date, scope) {
+	let x = new Date(date * 1);
+
+	switch (scope) {
+		case 'hour':
+			return x.toLocaleString();
+		case 'day':
+			return x.toLocaleDateString();
+		case 'week':
+			return x.toLocaleDateString();
+		case 'month':
+			return x.toLocaleDateString();
+		case undefined:
+		default:
+			return x.toLocaleString();
+	}
+}
+
+function getValues(records) {
+	let values = [];
+
+	Object.keys(records).forEach(date => {
+		// sum up all values for each date.
+		values.push(records[date].value.reduce((a, b) => (a * 1) + (b * 1), 0));
+	});
+
+	return values;
+}
+
+function consolidateByHour(data) {
+	let consolidatedData = [];
+
+	data.map(item => {
+		let d = new Date(item['date']); // eslint-disable-line
+
+		d = removeTime(d, false, true);
+		d = d.getTime();
+		consolidatedData[d] = consolidatedData[d] || [];
+		consolidatedData[d].push(item.value);
+	});
+
+	return consolidatedData;
+}
 
 function consolidateByDay(data) {
 	let consolidatedData = [];
@@ -101,6 +164,7 @@ function consolidateByDay(data) {
 		let d = new Date(item['date']); // eslint-disable-line
 
 		d = removeTime(d);
+		d = d.getTime();
 		consolidatedData[d] = consolidatedData[d] || [];
 		consolidatedData[d].push(item.value);
 	});
@@ -116,6 +180,7 @@ function consolidateByWeek(data) {
 		
 		d = removeTime(d);
 		d.setDate(d.getDate() - d.getDay());
+		d = d.getTime();
 		consolidatedData[d] = consolidatedData[d] || [];
 		consolidatedData[d].push(item.value);
 	});
@@ -131,6 +196,7 @@ function consolidateByMonth(data) {
 		
 		d = removeTime(d);
 		d.setDate(1);
+		d = d.getTime();
 		consolidatedData[d] = consolidatedData[d] || [];
 		consolidatedData[d].push(item.value);
 	});
@@ -138,24 +204,13 @@ function consolidateByMonth(data) {
 	return consolidatedData;
 }
 
-function removeTime(d) {
-	d.setHours(0);
-	d.setMinutes(0);
+function removeTime(d, hours = true, minutes = true) {
+	hours && d.setHours(0);
+	minutes && d.setMinutes(0);
 	d.setSeconds(0);
 	d.setMilliseconds(0);
 
 	return d;
-}
-
-function getValues(records) {
-	let values = [];
-
-	Object.keys(records).forEach(date => {
-		// sum up all values for each date.
-		values.push(records[date].reduce((a, b) => (a * 1) + (b * 1), 0));
-	});
-
-	return values;
 }
 
 function consolidate(data) {

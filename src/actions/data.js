@@ -58,20 +58,26 @@ const remote = {
 		},
 	},
 	collection: {
-		get: function get(key, where = []) {
+		get: function get(key, where = [], orderBy = false, limit = false) {
 			let w = getUserWhere();
 	
 			where.push(w);
 	
-			return module.exports.remote.collection.getPublic(key, where);
+			return module.exports.remote.collection.getPublic(key, where, orderBy, limit);
 		},
-		getPublic: function get(key, where) {
+		getPublic: function get(key, where = [], orderBy = [], limit = false) {
 			let query = db.collection(key);
 	
-			if (where) {
-				where.forEach(w => {
-					query = query.where(w.a, w.b, w.c);
-				});
+			where.forEach(w => {
+				query = query.where(w.a, w.b, w.c);
+			});
+
+			orderBy.forEach(o => {
+				query = query.orderBy(o.key, o.sort || 'asc');
+			});
+
+			if (limit !== false) {
+				query = query.limit(limit);
 			}
 			
 			return query.get()

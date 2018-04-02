@@ -25,7 +25,7 @@ const keys = {
 			}
 		},
 		chart: {
-			range: 'day',
+			range: 100,
 		}
 	},
 	animate: {

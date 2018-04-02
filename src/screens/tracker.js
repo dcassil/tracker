@@ -6,23 +6,31 @@ import Record from 'components/tracker/record/trackerRecord';
 import Icon from 'components/icon/icon';
 import 'screens/tracker.css';
 
+const ranges = ['hour', 'day', 'week', 'month'];
+
 class Tracker extends React.Component {
 	constructor() {
 		super();
 
 		this.returnToMainIfNoUser = this.returnToMainIfNoUser.bind(this);
 		this.handleAddClick = this.handleAddClick.bind(this);
+		this.handleRangeChange = this.handleRangeChange.bind(this);
 	}
 	componentDidMount() {
 		actions.tracker.setCurrentId(decodeURI(this.props.q_trackerId));
-	}
-	componentWillUpdate() {
-		// this.props.tracker = actions.tracker.getById(nextProps.trackerId);
+		document.body.ontouchend = function(e) {
+			if (e.target.id === 'myRange') {
+				actions.ui.chart.setRange(Math.round(e.target.value / 100) * 100);
+			}
+		};
 	}
 	handleAddClick(e) {
 		e.stopPropagation();
 
 		actions.ui.record.addPanel.openFor(this.props.tracker.id);
+	}
+	handleRangeChange(e) {
+		actions.ui.chart.setRange(e.target.value);
 	}
 	returnToMainIfNoUser() {
 		this.userTimeout = window.setTimeout(() => {
@@ -37,7 +45,8 @@ class Tracker extends React.Component {
 	}
 	renderChart() {
 		if (!this.props.tracker) return null;
-		let consolidatedRecords = actions.tracker.records.consolidateByScope(this.props.tracker.records, this.props.chartRange);
+		let range = ranges[Math.round(this.props.chartRange / 100)];
+		let consolidatedRecords = actions.tracker.records.consolidateByScope(this.props.tracker.records, range, 30);
 		let chartOptions = {
 			primary: 'rgba(255,255,255,1)',
 			secondary: 'rgba(255,255,255,.3)',
@@ -58,11 +67,8 @@ class Tracker extends React.Component {
 					{Chart}
 				</div>
 				<div className="trk-tracker-portrait-chart-options">
-					<div className="trk-tracker-bottomBar">
-						<input type="button" className="trk-button" value="day" onClick={function() { actions.ui.chart.setRange('day'); }}/>
-						<input type="button" className="trk-button" value="week" onClick={function() { actions.ui.chart.setRange('week'); }}/>
-						<input type="button" className="trk-button" value="month" onClick={function() { actions.ui.chart.setRange('month'); }}/>
-					</div>
+					<input type="range" list="myRangeList" min="0" max="300" step="1" value={this.props.chartRange} id="myRange" onChange={this.handleRangeChange}></input>
+					<span className="trk-tracker-chart-range-label" >{ranges.map(r => { return <span key={r}>{r}</span>; })}</span>
 				</div>
 				<div className="trk-tracker-portrait-details">
 					<div className="trk-tracker-portrait-details-row">
