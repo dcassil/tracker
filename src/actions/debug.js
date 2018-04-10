@@ -10,6 +10,17 @@ function log(data) {
 	}
 }
 
+function error(data) {
+	log(data);
+	throw new Error(data);
+}
+
+function logCatch(e, className, functionName, info) {
+	let message = `A Catch was triggered in ${className} at function ${functionName}.  ${info}.  ${e}`;
+
+	log(message);
+}
+
 function enable() {
 	store.set('debug', true);
 }
@@ -20,6 +31,8 @@ function disable() {
 
 module.exports = {
 	log,
+	logCatch,
+	error,
 	enable,
 	disable,
 };

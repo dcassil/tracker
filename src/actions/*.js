@@ -2,7 +2,7 @@ import * as screens from 'actions/screens';
 import * as user from 'actions/user';
 import * as data from 'actions/data';
 import * as ui from 'actions/ui';
-import * as tracker from 'actions/tracker';
+import * as Tracker from 'actions/tracker';
 import * as debug from 'actions/debug';
 import * as animate from 'actions/animate';
 
@@ -12,7 +12,7 @@ const actions = {
 	screens,
 	user,
 	ui,
-	tracker,
+	tracker: new Tracker(),
 	animate,
 };
 

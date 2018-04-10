@@ -12,116 +12,70 @@ function init(actionsRef) {
 
 const db = foundations.myFirebase.firestore();
 
-function getUserWhere() {
+let getUserQuery = function() {
 	let user = actions.user.getUser();
-	
-	return {
-		a: 'userId',
-		b: '==',
-		c: user.uid,
-	};
-}
 
-const remote = {
-	doc: {
-		set: function(collectionKey, docKey, dataToSave) {
-			dataToSave.userId = actions.user.getUser().uid;
-	
-			return db.collection(collectionKey).doc(docKey).set(dataToSave)
-				.then(docRef => {
-					actions.debug.log(docRef);
-				})
-				.catch(error => {
-					actions.debug.log(error);
-				});
-		},
-		get: function(collectionKey, docKey, where = []) {
-			where.push(getUserWhere());
-			return module.exports.remote.doc.getPublic(collectionKey, docKey, where);
-		},
-		getPublic: function(collectionKey, docKey, where) {
-			let query = db.collection(collectionKey).doc(docKey);
+	if (user)
+		return db.collection('Users').doc(user.uid);
 
-			if (where) {
-				where.forEach(w => {
-					query = query.where(w.a, w.b, w.c);
-				});
-			}
+	actions.debug.error('Trying to query user scoped data but not able to get user');	
+};
+let	getUserAllTrackersQuery = function() {
+	let userQuery = getUserQuery();
 
-			return query.get()
-				.then(doc => {
-					return doc && doc.data();
-				})
-				.catch(error => {
-					actions.debug.log(error);
-				});
-		},
-	},
-	collection: {
-		get: function get(key, where = [], orderBy = false, limit = false) {
-			let w = getUserWhere();
-	
-			where.push(w);
-	
-			return module.exports.remote.collection.getPublic(key, where, orderBy, limit);
-		},
-		getPublic: function get(key, where = [], orderBy = [], limit = false) {
-			let query = db.collection(key);
-	
-			where.forEach(w => {
-				query = query.where(w.a, w.b, w.c);
+	if (userQuery)
+		return userQuery.collection('Trackers');
+
+	actions.debug.error('Trying to query tracker scoped data but not able to get tracker');
+};
+let	userScopedQuery = function(collectionKey, docKey) {
+	if (typeof collectionKey !== 'string') return;
+	let userQuery = getUserQuery();
+
+	if (typeof docKey !== 'string') {
+		return userQuery.collection(collectionKey)
+			.catch(e => {
+				actions.debug.logCatch(e, 'Data Actions', 'userScopedQuery', `Collection: ${collectionKey}`);
 			});
-
-			orderBy.forEach(o => {
-				query = query.orderBy(o.key, o.sort || 'asc');
+	} else {
+		return userQuery.collection(collectionKey).doc(docKey)
+			.catch(e => {
+				actions.debug.logCatch(e, 'Data Actions', 'userScopedQuery', `Collection: ${collectionKey}, Doc:${docKey}`);
 			});
+	}
+};
+let	getUserTrackerAllRecordsQuery = function() {
+	let trackerQuery = getUserTrackerQuery();
 
-			if (limit !== false) {
-				query = query.limit(limit);
-			}
-			
-			return query.get()
-				.then(snapshot => {
-					let data = [];
-	
-					snapshot.forEach(doc => {
-						let result = doc.data();
-	
-						result.id = doc.id;
-						data.push(result);
-					});
-					
-					return data;
-				})
-				.catch(error => {
-					actions.debug.log(error);
-				});
-		},
-		listenToDBCollectionChange: function(dbCollectionKey, storeKey) {
-			let w = getUserWhere();
-		
-			db.collection(dbCollectionKey)
-				.where(w.a, w.b, w.c)
-				.onSnapshot(snapshot => {
-					let data = [];
-		
-					snapshot.docs.forEach(doc => {
-						let result = doc.data();
-		
-						result.id = doc.id;
-						data.push(result);
-					});
-		
-					foundations.store.set(storeKey, data);
-				});
+	if (trackerQuery)
+		return trackerQuery.collection('Records');
+
+	actions.debug.error('Trying to query records scoped data but not able to get record');
+};
+let	getUserTrackerRecordQuery = function() {
+	let trackerQuery = getUserTrackerQuery();
+	let recordId = actions.tracker.records.getCurrentId;
+
+	if (trackerQuery && recordId)
+		return getUserTrackerAllRecordsQuery.doc(actions.tracker.records.getCurrentId);
+
+	actions.debug.error('Trying to query records scoped data but not able to get record');
+};
+
+let userScoped = {
+	current: getUserQuery,
+	trackers: {
+		collection: getUserAllTrackersQuery,
+		current: getUserTrackerQuery,
+		record: {
+			collection: getUserTrackerAllRecordsQuery,
+			current: getUserTrackerRecordQuery
 		}
 	}
-	
-	
 };
 
 window.Tracker.data = module.exports = {
-	remote,
+	userScopedQuery,
 	init,
 };
 
